@@ -1,4 +1,4 @@
-# mtrack-gen-2
+# Borneotelemetry GPS Sistem
 Borneotelemetry dibangun menjadi dua bagian. Server device dan juga server client. Untuk client dibangun fullstack menggunakan : 
 <ul>
   <li>Laravel Versi 10</li>
