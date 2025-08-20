@@ -524,6 +524,7 @@
                         <li>Status: ${getStatusText(data.status)}</li>
                         <li>Kecepatan: ${data.speed} Km/h</li>
                         <li>Arah: ${direction}</li>
+                        <li>Angel: ${data.course}</li>
                         <li>Ignition: ${getIgnitionText(data.ignition)}</li>
                         <li>Alamat: ${data.address}</li>
                     </ul>
