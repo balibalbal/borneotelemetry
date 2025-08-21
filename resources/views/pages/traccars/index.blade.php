@@ -217,11 +217,40 @@
             zoom: 5,
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mymap);
+    // Definisi berbagai jenis peta
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
 
-        
+    var googleSat = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        attribution: '&copy; Google Satellite'
+    });
+
+    var googleTerrain = L.tileLayer('https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+        attribution: '&copy; Google Terrain'
+    }).addTo(mymap);
+
+    var esriWorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '&copy; Esri World Imagery'
+    });
+
+
+
+        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        // }).addTo(mymap);
+
+    // Tambahkan kontrol untuk memilih layer
+    var baseMaps = {
+        "Google Terrain": googleTerrain,
+        "OpenStreetMap": osm,
+        "Google Satellite": googleSat,
+        "Esri World Imagery": esriWorldImagery,
+        // "OpenTopoMap": openTopoMap
+    };
+
+    // Tambahkan kontrol pilihan peta ke dalam map
+    L.control.layers(baseMaps).addTo(mymap);
     
     $(document).ready(function () {
         var legendControlVisible = false;

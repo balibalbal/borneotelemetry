@@ -13,9 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\TraccarUpdateGps::class,
-        \App\Console\Commands\CheckGeofenceHso::class,
-        Commands\SendDataToHSO::class,
+        
     ];
 
     /**
@@ -35,7 +33,7 @@ class Kernel extends ConsoleKernel
 
         // $schedule->command('geofenceHso:check')->everyThreeMinutes();
         // $schedule->command('send:data-to-hso')->everyThreeMinutes();
-        $schedule->command('parkingHSO:check')->everyFourMinutes();
+        // $schedule->command('parkingHSO:check')->everyFourMinutes();
         // $schedule->command('send:data-to-gps')->everyFourMinutes();
         // $schedule->command('send:data-to-login')->everyFourMinutes();
         // $schedule->command('information:delete-old')->daily(); // di jalankan setiap pukul 00:00
