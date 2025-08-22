@@ -520,10 +520,10 @@
                         <h6>Informasi Kendaraan</h6>
                         <hr>
                         <ul>
-                            <li>No. Polisi: <span class="badge bg-danger">${orderDetails.name}</span></li>
+                            <li>No. Polisi: <span class="badge bg-danger">${orderDetails.no_pol}</span></li>
                             
                             <li>Timestamp: <b>${orderDetails.time}</b></li>
-                            <li>Supir: <b>${orderDetails.driver_name}</b></li>
+                            <li>LatLong: <b>${orderDetails.latitude}, ${orderDetails.longitude}</b></li>
                             <li>Status Kendaraan: ${getStatusText(orderDetails.status)}</li>
                             <li>Kecepatan: <b>${orderDetails.speed} kph</b></li>
                             <li>Arah Kendaraan: ${getDirection(orderDetails.course)}</li>                            
@@ -531,19 +531,9 @@
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <h6>Informasi Order</h6>
+                        <h6>Map</h6>
                         <hr>
-                        <ul>
-                            <li>No. Order: <a href="/orders/${orderDetails.id_order}"><span class="badge bg-danger">${orderDetails.no_order}</span></a></li>
-                            <li>Tanggal Order: <b>${orderDetails.order_date}</b></li>
-                            <li>Zak/Packing: <b>${orderDetails.zack_packing}</b></li>
-                            <li>DA/SI: <b>${orderDetails.da_si}</b></li>
-                            <li>Nama PT: <b>${orderDetails.atas_pt}</b></li>
-                            <li>Depo/Pelabuhan: <b>${orderDetails.depo_name}</b></li>
-                            <li>Customer/Pabrik: <b>${orderDetails.customer_name}</b></li>
-                            <li>Rute: <b>${orderDetails.nama_rute}</b></li>
-                            <li>Status: ${getStatusOrderText(orderDetails.status_order)}</li>
-                        </ul>
+                        
                     </div>
                 </div>
             `);
