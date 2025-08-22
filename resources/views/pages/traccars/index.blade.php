@@ -95,47 +95,34 @@
     </div> 
 
     <!-- Modal Detail Order -->
-    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detailModalLabel">Detail Order</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="orderDetails">
-                    <!-- Isi detail order akan ditampilkan di sini -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal -->
-    <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="downloadModalLabel">Unduh Laporan Monitoring</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="downloadForm" method="GET" action="">
-                        <div class="mb-3">
-                            <label for="start_date" class="form-label">Tanggal Awal</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="end_date" class="form-label">Tanggal Akhir</label>
-                            <input type="date" class="form-control" id="end_date" name="end_date" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Unduh</button>
-                    </form>
-                </div>
-            </div>
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detail Kendaraan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+
+        <!-- MAP -->
+        <div id="modalMap" style="height:450px; width:100%; border-radius:8px 8px 0 0;"></div>
+
+        <!-- INFO -->
+        <div class="p-4">
+          <h6>Informasi Kendaraan</h6>
+          <hr>
+          <ul id="vehicleInfo" class="list-unstyled"></ul>
         </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
+</div>
+
     
 
 </div>
