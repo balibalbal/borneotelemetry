@@ -506,38 +506,59 @@
 
         setInterval(fetchDataAndRefreshMap, 30000);
 
-
         $('#detailModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Tombol yang di klik
-            var orderDetails = button.data('order-details'); // Mendapatkan data order dari atribut data
+    var button = $(event.relatedTarget); 
+    var orderDetails = button.data('order-details'); 
 
-            // Mengisi konten modal dengan informasi yang sesuai
-            var modal = $(this);
-            modal.find('.modal-title').text(`Nopol - ${orderDetails.no_pol}`);
-            modal.find('#orderDetails').html(`
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6>Informasi Kendaraan</h6>
-                        <hr>
-                        <ul>
-                            <li>No. Polisi: <span class="badge bg-danger">${orderDetails.no_pol}</span></li>
-                            
-                            <li>Timestamp: <b>${orderDetails.time}</b></li>
-                            <li>LatLong: <b>${orderDetails.latitude}, ${orderDetails.longitude}</b></li>
-                            <li>Status Kendaraan: ${getStatusText(orderDetails.status)}</li>
-                            <li>Kecepatan: <b>${orderDetails.speed} kph</b></li>
-                            <li>Arah Kendaraan: ${getDirection(orderDetails.course)}</li>                            
-                            <li>Alamat: <i>${orderDetails.address}</i></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <h6>Map</h6>
-                        <hr>
-                        
-                    </div>
-                </div>
-            `);
-        });        
+    var modal = $(this);
+    modal.find('.modal-title').text(`Nopol - ${orderDetails.no_pol}`);
+    modal.find('#orderDetails').html(`
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Informasi Kendaraan</h6>
+                <hr>
+                <ul>
+                    <li>No. Polisi: <span class="badge bg-danger">${orderDetails.no_pol}</span></li>
+                    <li>Timestamp: <b>${orderDetails.time}</b></li>
+                    <li>LatLong: <b>${orderDetails.latitude}, ${orderDetails.longitude}</b></li>
+                    <li>Status Kendaraan: ${getStatusText(orderDetails.status)}</li>
+                    <li>Kecepatan: <b>${orderDetails.speed} kph</b></li>
+                    <li>Arah Kendaraan: ${getDirection(orderDetails.course)}</li>                            
+                    <li>Alamat: <i>${orderDetails.address}</i></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6>Map</h6>
+                <hr>
+                <div id="modalMap" style="height:300px; width:100%;"></div>
+            </div>
+        </div>
+    `);
+
+    // Tunggu sampai modal benar-benar tampil, baru buat map
+    modal.on('shown.bs.modal', function () {
+        if (orderDetails.latitude && orderDetails.longitude) {
+            // Hapus map lama kalau ada (biar gak error)
+            if (window.modalLeafletMap) {
+                window.modalLeafletMap.remove();
+            }
+
+            // Inisialisasi Leaflet Map
+            window.modalLeafletMap = L.map('modalMap').setView([orderDetails.latitude, orderDetails.longitude], 15);
+
+            // Tambah tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(window.modalLeafletMap);
+
+            // Tambah marker
+            L.marker([orderDetails.latitude, orderDetails.longitude]).addTo(window.modalLeafletMap)
+                .bindPopup(orderDetails.no_pol)
+                .openPopup();
+        }
+    });
+});
+
     });
 </script>
 @endpush
