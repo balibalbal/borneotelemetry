@@ -506,57 +506,44 @@
 
         setInterval(fetchDataAndRefreshMap, 30000);
 
+        let modalLeafletMap;
+
         $('#detailModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget); 
-    var orderDetails = button.data('order-details'); 
+  const button = $(event.relatedTarget);
+  const orderDetails = button.data('order-details');
 
-    var modal = $(this);
-    modal.find('.modal-title').text(`Nopol - ${orderDetails.no_pol}`);
-    modal.find('#orderDetails').html(`
-        <div class="row">
-            <div class="col-md-6">
-                <h6>Informasi Kendaraan</h6>
-                <hr>
-                <ul>
-                    <li>No. Polisi: <span class="badge bg-danger">${orderDetails.no_pol}</span></li>
-                    <li>Timestamp: <b>${orderDetails.time}</b></li>
-                    <li>LatLong: <b>${orderDetails.latitude}, ${orderDetails.longitude}</b></li>
-                    <li>Status Kendaraan: ${getStatusText(orderDetails.status)}</li>
-                    <li>Kecepatan: <b>${orderDetails.speed} kph</b></li>
-                    <li>Arah Kendaraan: ${getDirection(orderDetails.course)}</li>                            
-                    <li>Alamat: <i>${orderDetails.address}</i></li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <h6>Map</h6>
-                <hr>
-                <div id="modalMap" style="height:300px; width:100%;"></div>
-            </div>
-        </div>
-    `);
+  // Isi informasi kendaraan
+  const infoList = `
+    <li><b>No. Polisi:</b> <span class="badge bg-danger">${orderDetails.no_pol}</span></li>
+    <li><b>Timestamp:</b> ${orderDetails.time}</li>
+    <li><b>LatLong:</b> ${orderDetails.latitude}, ${orderDetails.longitude}</li>
+    <li><b>Status Kendaraan:</b> ${getStatusText(orderDetails.status)}</li>
+    <li><b>Kecepatan:</b> ${orderDetails.speed} kph</li>
+    <li><b>Arah Kendaraan:</b> ${getDirection(orderDetails.course)}</li>
+    <li><b>Alamat:</b> <i>${orderDetails.address}</i></li>
+  `;
+  $('#vehicleInfo').html(infoList);
 
-    // Tunggu sampai modal benar-benar tampil, baru buat map
-    modal.on('shown.bs.modal', function () {
-        if (orderDetails.latitude && orderDetails.longitude) {
-            // Hapus map lama kalau ada (biar gak error)
-            if (window.modalLeafletMap) {
-                window.modalLeafletMap.remove();
-            }
+  // Tunggu modal tampil penuh, baru render peta
+  $('#detailModal').on('shown.bs.modal', function () {
+    if (modalLeafletMap) {
+      modalLeafletMap.remove(); // hapus map lama
+    }
 
-            // Inisialisasi Leaflet Map
-            window.modalLeafletMap = L.map('modalMap').setView([orderDetails.latitude, orderDetails.longitude], 15);
+    modalLeafletMap = L.map('modalMap').setView(
+      [orderDetails.latitude, orderDetails.longitude], 
+      18 // lebih dekat
+    );
 
-            // Tambah tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap'
-            }).addTo(window.modalLeafletMap);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(modalLeafletMap);
 
-            // Tambah marker
-            L.marker([orderDetails.latitude, orderDetails.longitude]).addTo(window.modalLeafletMap)
-                .bindPopup(orderDetails.no_pol)
-                .openPopup();
-        }
-    });
+    L.marker([orderDetails.latitude, orderDetails.longitude])
+      .addTo(modalLeafletMap)
+      .bindPopup(`<b>${orderDetails.no_pol}</b><br>${orderDetails.address}`)
+      .openPopup();
+  });
 });
 
     });
