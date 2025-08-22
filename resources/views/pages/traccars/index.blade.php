@@ -360,7 +360,7 @@
                 // Menambahkan event listener untuk setiap tombol dalam list group
                 $(`#collapse${index}`).on('show.bs.collapse', function () {
                     if (data.latitude !== 0 && data.longitude !== 0) {
-                        mymap.flyTo([data.latitude, data.lon], 18);
+                        mymap.flyTo([data.latitude, data.longitude], 18);
                         var popup = L.popup().setLatLng([data.latitude, data.longitude]).setContent(getPopupContent(data));
                         marker.bindPopup(popup).openPopup();
                     } else {
