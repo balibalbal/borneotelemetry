@@ -156,8 +156,6 @@
 
 <script>
     var mapData = [];
-    var depotMapData = [];
-    var customerMapData = [];
 
     $(document).ready(function () {
         fetchDataAndRefreshMap();
