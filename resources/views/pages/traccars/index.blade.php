@@ -52,15 +52,7 @@
             </div>
         </div> --}}
 
-        <div class="col-12 col-lg-3 mb-4 mb-xl-0">
-            <div class="card mb-2">
-                <div class="card-body d-flex justify-content-center">
-                    <button type="button" class="btn rounded-pill btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#downloadModal">
-                        <i class="mdi mdi-download-circle"></i> &nbsp; Unduh
-                    </button>
-                </div>
-            </div>
-            
+        <div class="col-12 col-lg-3 mb-4 mb-xl-0">            
             <div class="card">
                 <div class="card-body">
                     <!-- Input pencarian -->
@@ -219,11 +211,23 @@
                         updateMap(mapData);
                     }
 
+                    updateVehicleCounts(response);
+
                 },
                 error: function (xhr, status, error) {
                     console.error('AJAX request gagal:', error);
                 }
             });
+        }
+
+        function updateVehicleCounts(response) {
+            $('#total-vehicles-count').text(response.totalVehicles + ' Kendaraan');
+            $('#total-mati-count').text(response.totalOffline + ' Kendaraan');
+            $('#total-bergerak-count').text(response.totalOnline + ' Kendaraan');
+            $('#total-diam-count').text(response.totalAck + ' Kendaraan');
+            $('#total-berhenti-count').text(response.totalEngine + ' Kendaraan');
+            // $('#total-customer').text(response.totalCustomer+ ' Customer');
+            $('#kecepatan').text(response.noPol+ ' - ' +response.maxSpeed+ ' Km/h');
         }
 
         // Simpan referensi ke marker sebelumnya untuk setiap kendaraan
