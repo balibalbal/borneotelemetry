@@ -210,15 +210,13 @@
                 url: '/get-traccar-data',
                 method: 'GET',
                 success: function (response) {
-                    //console.log(response);
+                    console.log(response);
                     if (response.error) {
                         //console.error('Gagal mengambil data:', response.error);
                         console.error('Gagal mengambil data');
                     } else {
                         mapData = response.mapData;
-                        depotMapData = response.depotMapData;
-                        customerMapData = response.customerMapData;
-                        updateMap(mapData, depotMapData, customerMapData);
+                        updateMap(mapData);
                     }
 
                 },
@@ -242,7 +240,7 @@
             }
 
             var validMarkers = mapData.filter(function (data) {
-                return data.lat !== 0 && data.lon !== 0;
+                return data.latitude !== 0 && data.longitude !== 0;
             });
 
             $('#dataList').empty();
@@ -361,9 +359,9 @@
 
                 // Menambahkan event listener untuk setiap tombol dalam list group
                 $(`#collapse${index}`).on('show.bs.collapse', function () {
-                    if (data.lat !== 0 && data.lon !== 0) {
-                        mymap.flyTo([data.lat, data.lon], 18);
-                        var popup = L.popup().setLatLng([data.lat, data.lon]).setContent(getPopupContent(data));
+                    if (data.latitude !== 0 && data.longitude !== 0) {
+                        mymap.flyTo([data.latitude, data.lon], 18);
+                        var popup = L.popup().setLatLng([data.latitude, data.longitude]).setContent(getPopupContent(data));
                         marker.bindPopup(popup).openPopup();
                     } else {
                         console.warn('Invalid coordinates for the clicked item.');
