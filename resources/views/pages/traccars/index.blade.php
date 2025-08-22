@@ -303,9 +303,9 @@
                         <div class="d-flex align-items-center">
                             <img src="${carImage}" alt="Car Image" style="width: 30%; margin-right: 10px;">
                             <div>
-                                <h5 class="mb-1">${data.ignition}</h5>
-                                ${getStatusOrderText(data.status_order)}<br>
-                                <span style="font-size: 11px;" class="badge rounded-pill  bg-label-primary">${data.order_type}</span>
+                                <h5 class="mb-1">${data.no_pol}</h5>
+                                ${getStatusOrderText(data.status)}<br>
+                                <span style="font-size: 11px;" class="badge rounded-pill  bg-label-primary">${data.time}</span>
                             </div>
                         </div>
                         <div class="collapse" id="collapse${index}">
