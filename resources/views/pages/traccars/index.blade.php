@@ -304,7 +304,7 @@
                             <img src="${carImage}" alt="Car Image" style="width: 30%; margin-right: 10px;">
                             <div>
                                 <h5 class="mb-1">${data.no_pol}</h5>
-                                ${getStatusOrderText(data.status)}<br>
+                                ${getStatusText(data.status)}<br>
                                 <span style="font-size: 11px;" class="badge rounded-pill  bg-label-primary">${data.time}</span>
                             </div>
                         </div>
