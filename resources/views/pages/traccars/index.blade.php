@@ -86,13 +86,13 @@
 
         <div class="col-12 col-lg-9 mb-4 mb-xl-0">
             <div class="card mb-2">
-                <div class="card-body d-flex justify-content-between">
+                {{-- <div class="card-body d-flex justify-content-between">
                   <a href="{{ route('monitoring.list-order', ['status' => 2]) }}" class="btn rounded-pill btn-warning waves-effect waves-light"><i class="mdi mdi-warehouse"></i> &nbsp; {{ $inDepoCount }} Depo</a>
                   <a href="{{ route('monitoring.list-order', ['status' => 3]) }}" class="btn rounded-pill bg-custom waves-effect waves-light"><i class="mdi mdi-truck-fast"></i> &nbsp; {{ $otwCount }} OTW</a>
                   <a href="{{ route('monitoring.list-order', ['status' => 4]) }}" class="btn rounded-pill btn-dark waves-effect waves-light"><i class="mdi mdi-home-city"></i> &nbsp; {{ $inCustomerCount }} Cust</a>
                   <a href="{{ route('monitoring.list-order', ['status' => 5]) }}" class="btn rounded-pill btn-info waves-effect waves-light"><i class="mdi mdi-truck-delivery"></i> &nbsp; {{ $inBackCount }} Back</a>
                   <a href="{{ route('monitoring.list-order', ['status' => 6]) }}" class="btn rounded-pill btn-success waves-effect waves-light"><i class="mdi mdi-check-circle"></i> &nbsp; {{ $finishCount }} Finish</a>
-                </div>
+                </div> --}}
             </div>
             <div class="card">
                 {{-- <div class="card-body"> --}}
