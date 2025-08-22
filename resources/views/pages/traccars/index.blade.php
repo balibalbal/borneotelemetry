@@ -513,7 +513,7 @@
 
             // Mengisi konten modal dengan informasi yang sesuai
             var modal = $(this);
-            modal.find('.modal-title').text(`Nopol - ${orderDetails.no_order}`);
+            modal.find('.modal-title').text(`Nopol - ${orderDetails.no_pol}`);
             modal.find('#orderDetails').html(`
                 <div class="row">
                     <div class="col-md-6">
