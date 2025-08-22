@@ -350,7 +350,7 @@
                                 <hr>
                                 <div class="text-center">
                                     <span class="badge rounded-pill btn-primary waves-effect waves-light" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#detailModal" data-order-details='${JSON.stringify(data)}'>
-                                        <i class="mdi mdi-clipboard-list me-sm-1"></i> Detail Order
+                                        <i class="mdi mdi-clipboard-list me-sm-1"></i> Detail Kendaraan
                                     </span>
                                 </div>
                             </div>                                
@@ -513,7 +513,7 @@
 
             // Mengisi konten modal dengan informasi yang sesuai
             var modal = $(this);
-            modal.find('.modal-title').text(`Detail Order - ${orderDetails.no_order}`);
+            modal.find('.modal-title').text(`Nopol - ${orderDetails.no_order}`);
             modal.find('#orderDetails').html(`
                 <div class="row">
                     <div class="col-md-6">
