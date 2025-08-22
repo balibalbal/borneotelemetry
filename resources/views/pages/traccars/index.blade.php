@@ -284,7 +284,7 @@
                     // Jika sudah ada, update posisi marker dengan animasi
                     marker = vehicleMarkers[data.id];
                     var currentLatLng = previousLatLngs[data.id]; // Menggunakan posisi sebelumnya
-                    var newLatLng = L.latLng(data.lat, data.lon); // Tetapkan posisi baru
+                    var newLatLng = L.latLng(data.latitude, data.longitude); // Tetapkan posisi baru
                     marker.setRotationAngle(rotationAngle);
                     marker.setIcon(icon);
                     marker.setPopupContent(getPopupContent(data));
