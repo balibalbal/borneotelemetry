@@ -99,7 +99,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="detailModalLabel">Detail Order</h5>
+                    <h5 class="modal-title" id="detailModalLabel">Nopol</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="orderDetails">
@@ -111,33 +111,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="downloadModalLabel">Unduh Laporan Monitoring</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="downloadForm" method="GET" action="">
-                        <div class="mb-3">
-                            <label for="start_date" class="form-label">Tanggal Awal</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="end_date" class="form-label">Tanggal Akhir</label>
-                            <input type="date" class="form-control" id="end_date" name="end_date" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Unduh</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
 </div>
 
 
@@ -350,7 +323,7 @@
                                 <hr>
                                 <div class="text-center">
                                     <span class="badge rounded-pill btn-primary waves-effect waves-light" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#detailModal" data-order-details='${JSON.stringify(data)}'>
-                                        <i class="mdi mdi-clipboard-list me-sm-1"></i> Detail Order
+                                        <i class="mdi mdi-clipboard-list me-sm-1"></i> Detail
                                     </span>
                                 </div>
                             </div>                                
@@ -513,37 +486,27 @@
 
             // Mengisi konten modal dengan informasi yang sesuai
             var modal = $(this);
-            modal.find('.modal-title').text(`Detail Order - ${orderDetails.no_order}`);
+            modal.find('.modal-title').text(`Nopol - ${data.no_pol}`);
             modal.find('#orderDetails').html(`
                 <div class="row">
                     <div class="col-md-6">
                         <h6>Informasi Kendaraan</h6>
                         <hr>
                         <ul>
-                            <li>No. Polisi: <span class="badge bg-danger">${orderDetails.name}</span></li>
+                            <li>No. Polisi: <span class="badge bg-danger">${data.status}</span></li>
                             
-                            <li>Timestamp: <b>${orderDetails.time}</b></li>
-                            <li>Supir: <b>${orderDetails.driver_name}</b></li>
-                            <li>Status Kendaraan: ${getStatusText(orderDetails.status)}</li>
+                            <li>Timestamp: <b>${data.time}</b></li>
+                            <li>Supir: <b>${data.latitude}</b></li>
+                            <li>Status Kendaraan: ${getStatusText(data.status)}</li>
                             <li>Kecepatan: <b>${orderDetails.speed} kph</b></li>
-                            <li>Arah Kendaraan: ${getDirection(orderDetails.course)}</li>                            
-                            <li>Alamat: <i>${orderDetails.address}</i></li>
+                            <li>Arah Kendaraan: ${getDirection(data.course)}</li>                            
+                            <li>Alamat: <i>${data.address}</i></li>
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <h6>Informasi Order</h6>
+                        <h6>Maps</h6>
                         <hr>
-                        <ul>
-                            <li>No. Order: <a href="/orders/${orderDetails.id_order}"><span class="badge bg-danger">${orderDetails.no_order}</span></a></li>
-                            <li>Tanggal Order: <b>${orderDetails.order_date}</b></li>
-                            <li>Zak/Packing: <b>${orderDetails.zack_packing}</b></li>
-                            <li>DA/SI: <b>${orderDetails.da_si}</b></li>
-                            <li>Nama PT: <b>${orderDetails.atas_pt}</b></li>
-                            <li>Depo/Pelabuhan: <b>${orderDetails.depo_name}</b></li>
-                            <li>Customer/Pabrik: <b>${orderDetails.customer_name}</b></li>
-                            <li>Rute: <b>${orderDetails.nama_rute}</b></li>
-                            <li>Status: ${getStatusOrderText(orderDetails.status_order)}</li>
-                        </ul>
+                        
                     </div>
                 </div>
             `);
