@@ -129,7 +129,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="downloadForm" method="GET" action="{{ route('monitoring.export') }}">
+                    <form id="downloadForm" method="GET" action="">
                         <div class="mb-3">
                             <label for="start_date" class="form-label">Tanggal Awal</label>
                             <input type="date" class="form-control" id="start_date" name="start_date" required>
