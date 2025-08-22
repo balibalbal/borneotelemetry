@@ -248,16 +248,16 @@
             validMarkers.forEach(function (data, index) {
                 var carImage;
                 switch (data.status) {
-                    case 'offline':
+                    case 'mati':
                         carImage = 'backend/assets/img/illustrations/off.png';
                         break;
-                    case 'online':
+                    case 'bergerak':
                         carImage = 'backend/assets/img/illustrations/on.png';
                         break;
-                    case 'ack':
+                    case 'diam':
                         carImage = 'backend/assets/img/illustrations/ack.png';
                         break;
-                    case 'engine':
+                    case 'berhenti':
                         carImage = 'backend/assets/img/illustrations/engine.png';
                         break;
                     default:
@@ -303,7 +303,7 @@
                         <div class="d-flex align-items-center">
                             <img src="${carImage}" alt="Car Image" style="width: 30%; margin-right: 10px;">
                             <div>
-                                <h5 class="mb-1">${data.no_pol}</h5>
+                                <h6 class="mb-1">${data.no_pol}</h6>
                                 ${getStatusText(data.status)}<br>
                                 <span style="font-size: 11px;" class="badge rounded-pill  bg-label-primary">${data.time}</span>
                             </div>
