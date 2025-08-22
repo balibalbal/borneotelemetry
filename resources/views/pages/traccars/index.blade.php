@@ -380,7 +380,16 @@
             });
         }
 
-        
+        function getIgnitionText(ignition) {
+                    switch (ignition) {
+                        case 'On':
+                            return '<span class="badge rounded-pill bg-warning">On</span>';
+                        case 'Off':
+                            return '<span class="badge rounded-pill bg-danger">Off</span>';
+                        default:
+                            return '<span class="badge rounded-pill bg-secondary">Tidak Dikenal</span>';
+                    }
+                }
 
         function getDirection(course) {
             if (course >= 337.5 || course < 22.5) {
