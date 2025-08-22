@@ -288,7 +288,7 @@
                     moveMarkerSmoothly(marker, currentLatLng, newLatLng);
                 } else {
                     // Jika belum ada, buat marker baru
-                    marker = L.marker([data.latitude, data.lonngitude], { icon: icon, rotationAngle: rotationAngle }).addTo(mymap);
+                    marker = L.marker([data.latitude, data.longitude], { icon: icon, rotationAngle: rotationAngle }).addTo(mymap);
                     marker.bindPopup(getPopupContent(data));
 
                     // Simpan marker kendaraan ke dalam objek vehicleMarkers
