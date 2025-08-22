@@ -102,7 +102,7 @@
 <div class="container-fluid">     
     <div class="row mt-3">        
         <div class="col-sm-6 col-lg-2 mb-4">
-                  <div class="card card-border-shadow-danger h-100">
+            <div class="card card-border-shadow-danger h-100">
                     <div class="card-body">
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
@@ -114,7 +114,7 @@
                       </div>
                       <p class="mb-0 text-heading">Mati</p>
                     </div>
-                  </div>
+            </div>
         </div>
 
         <div class="col-sm-6 col-lg-2 mb-4">
