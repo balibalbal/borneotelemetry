@@ -303,7 +303,7 @@
                         <div class="d-flex align-items-center">
                             <img src="${carImage}" alt="Car Image" style="width: 30%; margin-right: 10px;">
                             <div>
-                                <h5 class="mb-1">${data.name}</h5>
+                                <h5 class="mb-1">${data.ignition}</h5>
                                 ${getStatusOrderText(data.status_order)}<br>
                                 <span style="font-size: 11px;" class="badge rounded-pill  bg-label-primary">${data.order_type}</span>
                             </div>
@@ -404,13 +404,13 @@
 
         function getStatusText(status) {
                     switch (status) {
-                        case 'online':
+                        case 'bergerak':
                             return '<span class="badge rounded-pill bg-success">Bergerak</span>';
-                        case 'offline':
+                        case 'mati':
                             return '<span class="badge rounded-pill bg-danger">Mati</span>';
-                        case 'engine':
+                        case 'berhenti':
                             return '<span class="badge rounded-pill bg-warning text-dark">Berhenti</span>';
-                        case 'ack':
+                        case 'diam':
                             return '<span class="badge rounded-pill bg-secondary">Diam</span>';
                         default:
                             return '<span class="badge rounded-pill bg-secondary">Tidak Dikenal</span>';
@@ -445,18 +445,16 @@
             var formattedDistance = data.distance ? data.distance.toLocaleString('id-ID') : "0";
             return `
                 <div>
-                    <h6>ID ${data.id_order} - ${data.name} - ${getStatusOrderText(data.status_order)}</h6><hr>
+                    <h6>${data.name}</h6>
                     <ul>
-                        <li>No. Order: <span class="badge bg-danger">${data.no_order}</span></li>
-                        <li>Tanggal Order: ${data.order_date}</li>
-                        <li>Tipe Order: ${data.order_type}</li>
-                        <li>Status: ${getStatusText(data.status)}</li>
-                        <li>Kecepatan: ${data.speed} kph</li>
-                        <li>Arah Kendaraan: ${direction}</li>
-                        <li>Depo/Pelabuhan: ${data.depo_name}</li>
-                        <li>Customer/Pabrik: ${data.customer_name}</li>  
-                        <li>Finish Line: ${data.finish_line}</li>  
                         <li>Update Terakhir: ${data.time}</li>
+                        <li>Status: ${getStatusText(data.status)}</li>
+                        <li>Kecepatan: ${data.speed} Km/h</li>
+                        <li>Arah: ${direction}</li>
+                        <li>Angle: ${data.course}&deg;</li>
+                        <li>Altitude: ${data.altitude} m</li>
+                        <li>Ignition: ${getIgnitionText(data.ignition)}</li>
+                        <li>LatLong: ${data.latitude}, ${data.longitude}</li>
                         <li>Alamat: ${data.address}</li>
                     </ul>
                 </div>
