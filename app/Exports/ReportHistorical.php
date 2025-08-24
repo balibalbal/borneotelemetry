@@ -35,6 +35,7 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
                 histories.time,
                 histories.no_pol,
                 histories.speed,
+                histories.course,
                 histories.latitude,
                 histories.longitude,
                 histories.ignition_status,
@@ -67,7 +68,7 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
     {
         return [
             'NO', 'TANGGAL', 'NOPOL',
-            'SPEED', 'LATITUDE','LONGITUDE', 'IGNITION', 'ALAMAT', 'STATUS'
+            'SPEED', 'ANGLE/ARAH', 'LATITUDE','LONGITUDE', 'IGNITION', 'ALAMAT', 'STATUS'
         ];
     }
 
