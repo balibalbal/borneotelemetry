@@ -244,6 +244,7 @@
                 update_time: 'Update',
                 no_pol: 'Nopol',
                 speed: 'Kecepatan',
+                course: 'Angle/Arah',
                 map_link: 'Google Maps',
                 address: 'Lokasi'
             };

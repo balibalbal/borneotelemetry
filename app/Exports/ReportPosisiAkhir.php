@@ -43,6 +43,7 @@ class ReportPosisiAkhir implements FromCollection, WithHeadings, WithEvents
                 traccars.time,
                 traccars.no_pol,
                 traccars.speed,
+                traccars.course,
                 traccars.latitude,
                 traccars.longitude,
                 traccars.address,
@@ -72,7 +73,7 @@ class ReportPosisiAkhir implements FromCollection, WithHeadings, WithEvents
     {
         return [
             'NO', 'TANGGAL', 'NOPOL',
-            'SPEED','LATITUDE','LONGITUDE', 'ALAMAT', 'STATUS'
+            'SPEED', 'ANGLE/ARAH', 'LATITUDE','LONGITUDE', 'ALAMAT', 'STATUS'
         ];
     }
 
