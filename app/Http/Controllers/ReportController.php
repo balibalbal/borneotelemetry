@@ -522,21 +522,14 @@ class ReportController extends Controller
         ]);
     }
 
-    public function tampilkanListHistorical(Request $request)
-    {        
-        // Pastikan startDate mulai dari jam 00:00:00 dan endDate sampai jam 23:59:59
-        $startDate = Carbon::parse($request->start_date)->startOfDay(); // 00:00:00
-        $endDate = Carbon::parse($request->end_date)->endOfDay(); // 23:59:59
-        
-        $no_pol = $request->no_pol;
+    public function tampilkanListHistorical(Request $request) 
+    {
+        $filters = $request->all();
+        $data = \App\Exports\ReportHistorical::getData($filters); // Ambil data sesuai filter
 
-        $speeds = History::where('vehicle_id', $no_pol)
-                    ->whereBetween('time', [$startDate, $endDate])
-                    ->orderBy('time')
-                    ->get();
-//var_dump($speeds); exit;
         return response()->json([
-            'data' => $speeds
+            'success' => true,
+            'data' => $data ?? [], // kalau null, kasih array kosong
         ]);
     }
 

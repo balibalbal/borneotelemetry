@@ -1,36 +1,51 @@
-<style>
-    #dataTable_processing {
-      display: none !important;
-    }
+@push('style')
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+  <style>
     #no_pol + .select2-container .select2-selection--single {
         height: 45px;
         padding: 10px;
     }
+    #loading {
+      display: none;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
-  @extends('layouts.admin')
-  @section('title', 'Historical Report')
-  @section('content')
-  <div class="container-fluid">
-      @if(session('pesan'))
-      <div class="alert alert-success alert-dismissible" role="alert">
-          <i class="mdi mdi-check-circle"></i> {{ session('pesan') }}.
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-          </button>
-      </div>
-      @endif
-  
-      <div class="card shadow mb-4">  
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <div class="col-lg-12 col-sm-6">
-                <div class="card h-100">
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="card-body mb-0">
-                        <div class="card-info mb-0 py-2 mb-lg-1 mb-xl-3">
-                            <h5>Laporan Historical Perjalanan Kendaraan</h5><hr>
-                            <form class="mb-0 mt-3" action="{{ route('report.downloadHistorical') }}" method="GET" onsubmit="return validateDates()">
-                                <div class="row">
-                                    <div class="col-lg-4">
+@endpush
+
+@extends('layouts.admin')
+@section('title', 'Laporan Historical')
+
+@section('content')
+<div class="container-fluid">
+
+  @if(session('pesan'))
+    <div class="alert alert-success alert-dismissible" role="alert">
+      <i class="mdi mdi-check-circle"></i> {{ session('pesan') }}.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  @endif
+
+  <div class="row">
+    <div class="col-lg-12 col-12">
+      <div class="card mb-3">
+        <div class="card-header header-elements">
+          <div>
+            <h5 class="card-title mb-0">Laporan Historical</h5>
+            <small class="text-muted">Laporan yang dapat di-generate ke Excel maksimal 1 bulan</small>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <form action="{{ route('report.downloadHistorical') }}" method="GET" onsubmit="return validateDates()">
+            <div class="card border border-primary shadow-sm">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-4">
                                         <div class="form-floating form-floating-outline mb-3">
                                             <select name="no_pol" id="no_pol" class="form-select form-control @error('no_pol') is-invalid @enderror" data-allow-clear="true">
                                                 <option value="">Pilih Kendaraan</option>
@@ -57,131 +72,94 @@
                                             <label for="end_date">Tanggal Akhir</label>
                                             @error('end_date')<div class="text-danger">{{ $message }}</div> @enderror
                                         </div>
-                                    </div> 
-                                </div>
-                                <div class="row">                                 
-                                    <div class="col-lg-12 d-flex justify-content-between mb-0 mt-3">
-                                        <button class="btn btn-primary" type="submit"><i class="mdi mdi-download-circle me-sm-1"></i> Unduh Laporan Excel</button>
-                                        
-                                        <button id="showButton" type="button" class="btn btn-warning">
-                                            <i class="mdi mdi-eye me-sm-1"></i> Tampilkan List
-                                        </button>
                                     </div>
-                                </div>
-                                <!-- Notifikasi -->
-                                <div id="dateAlert" class="alert alert-danger alert-dismissible d-none mt-4" role="alert">
-                                  Tanggal awal dan tanggal akhir harus berada dalam bulan yang sama.
-                                  <button type="button" class="btn-close" aria-label="Close" onclick="closeAlert()"></button>
-                                </div>
-                              </form>
-                        </div>
-                      </div>
-                    </div>
-                    {{-- <div class="col-4 text-end d-flex align-items-end justify-content-center">
-                      <div class="card-body pb-0 pt-3 position-absolute bottom-0">
-                        <img src="{{ url('backend/assets/img/illustrations/card-ratings-illustration.png') }}" alt="Assign Order" width="125">
-                      </div>
-                    </div> --}}
-                  </div>
-                </div>
-            </div>            
-        </div>
-          <div class="card-body">
-            <div id="tableContainer" class="d-none">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                      <thead>
-                          <tr>
-                              <th>No</th>
-                              <th>Tanggal</th>
-                              <th>Nopol</th>
-                              <th>Latitude</th>
-                              <th>Longitude</th>
-                              <th>Speed(Km/h)</th>
-                              <th>Angle/Arah (Derajat)</th>
-                              <th>Alamat</th>
-                              <th>Status</th>
-                          </tr>
-                      </thead>
-                  </table>
-              </div>
-            </div>
-          </div>
-          <div id="dataTable_processing2" class="dataTables_processing" style="width: 6rem;">
-            <img class="card-img-top" src="/backend/assets/img/icons/mtrack-logo-animasi.gif" alt="Card image cap">
-          </div>
-      </div>
-  </div>
-  @endsection
-  
-  @push('scripts')
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-      <script>
-          $(document).ready(function() {
-            $('#dataTable_processing2').hide();
 
-            $('#no_pol').select2({
+                  <!-- Tombol Unduh -->
+                  <div class="col-lg-2 mt-3">
+                    <button class="btn btn-primary w-100" type="submit">
+                      <i class="mdi mdi-download-circle me-sm-1"></i> Unduh
+                    </button>
+                  </div>
+
+                  <!-- Tombol Preview -->
+                  <div class="col-lg-2 mt-3">
+                    <button class="btn btn-dark w-100" type="button" onclick="handlePreview()">
+                      <i class="mdi mdi-eye-outline me-sm-1"></i> Tampilkan
+                    </button>
+                  </div>
+
+                  <!-- Alert Error -->
+                  <div class="col-12">
+                    <div id="dateAlert" class="alert alert-danger alert-dismissible d-none mt-3" role="alert">
+                      <button type="button" class="btn-close" aria-label="Close" onclick="closeAlert()"></button>
+                    </div>
+                  </div>
+
+                </div> <!-- row -->
+              </div> <!-- card-body -->
+            </div> <!-- card -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW TABLE -->
+  <div class="row">
+    <div id="previewTableContainer" class="mt-2 mb-4 d-none">
+      <div class="card">
+        <div class="card-body table-responsive">
+          <table class="table table-bordered table-hover" id="previewTable">
+            <thead>
+              <tr id="previewHead"></tr>
+            </thead>
+            <tbody id="previewBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="row">
+    <div id="loading">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  
+@endsection
+
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function() {    
+        $('#loading').hide();
+         $('#no_pol').select2({
                 allowClear: true,
                 placeholder: 'Pilih Kendaraan',
                 dropdownAutoWidth: true,
                 width: '100%',
             });
+    });
 
-            $('#showButton').click(function () {
-                if (validateDates()) {
-                    // Tampilkan loading indicator
-                    $('#dataTable_processing2').show();
+  
 
-                    $.ajax({
-                        url: '/report-historical',
-                        type: 'GET',
-                        data: {
-                            start_date: $('#start_date').val(),
-                            end_date: $('#end_date').val(),
-                            no_pol: $('#no_pol').val()
-                        },
-                        success: function (response) {
-                            console.log(response);
-                            
-                            // Sembunyikan loading setelah data dimuat
-                            $('#dataTable_processing2').hide();
-
-                            // Tampilkan tabel
-                            $('#tableContainer').removeClass('d-none');
-
-                            // Hapus data lama di tabel
-                            var dataTable = $('#dataTable').DataTable();
-                            dataTable.clear().draw();
-
-                            // Tambahkan data baru
-                            response.data.forEach(function (item, index) {
-                                dataTable.row.add([
-                                    index + 1, // Nomor urut
-                                    item.time,
-                                    item.no_pol,
-                                    item.latitude,
-                                    item.longitude,
-                                    item.speed,
-                                    item.course,
-                                    // formatDateTime(item.start_time),
-                                    // formatDateTime(item.end_time),
-                                    item.address,
-                                    item.status
-                                ]).draw(false);
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error fetching data:', error);
-                            $('#dataTable_processing2').hide();
-                        }
-                    });
-                }
-            });   
-            
-        });
-        
-        function validateDates() {
+  function validateDates() {
             var startDateInput = document.getElementById("start_date");
             var endDateInput = document.getElementById("end_date");
             var startDate = new Date(startDateInput.value);
@@ -217,5 +195,175 @@
             var dateAlert = document.getElementById("dateAlert");
             dateAlert.classList.add("d-none"); // Sembunyikan notifikasi
         }
-  </script>
-   @endpush
+  
+
+  function handlePreview() {
+    if (validateDates()) {
+        const params = {
+            start_date: $('#start_date').val(),
+            end_date: $('#end_date').val(),
+            no_pol: $('#no_pol').val()
+        };
+
+        // Reset konten & tampilkan loading
+        $('#previewTableContainer').addClass('d-none');
+        $('#previewHead, #previewBody').html('');
+        $('#loading').show();
+
+        $.ajax({
+        url: '/report-historical',
+        method: 'GET',
+        data: params,
+        success: function(res) {
+            $('#loading').hide();
+
+            if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+            const filtered = res.data.filter(row => Object.keys(row).length > 0);
+            if (filtered.length === 0) {
+                Swal.fire({
+                icon: 'warning',
+                title: 'Oops!',
+                text: 'Data tidak ditemukan.',
+                confirmButtonColor: '#3085d6',
+                });
+                return;
+            }
+
+            const firstValid = filtered[0];
+            let headers = Object.keys(firstValid);
+        
+            // Tambah map_link di akhir
+            headers.push('map_link');
+
+            const labelMapping = {
+                time: 'Tanggal',
+                no_pol: 'Nopol',
+                ignition_status: 'Igniton',
+                speed: 'Kecepatan',
+                map_link: 'Google Maps',
+                address: 'Lokasi'
+            };
+
+            if ($.fn.DataTable.isDataTable('#previewTable')) {
+                $('#previewTable').DataTable().clear().destroy();
+            }
+
+            $('#previewHead').html(
+                headers.map(h => `<th>${labelMapping[h] || h}</th>`).join('')
+            );
+
+            $('#previewBody').html(
+                filtered.map(row => {
+                return '<tr>' +
+                    headers.map(key => {
+                        let value = row[key] ?? '';
+                        let tdStyle = '';
+
+                        // Status badge
+                        if (key === 'status') {
+                            let badgeClass = 'bg-secondary';
+                            let text = 'Tidak Diketahui';
+                            switch (value) {
+                                case 'bergerak':
+                                    badgeClass = 'bg-success';
+                                    text = 'Bergerak';
+                                    break;
+                                case 'mati':
+                                    badgeClass = 'bg-danger';
+                                    text = 'Mati';
+                                    break;
+                                case 'berhenti':
+                                    badgeClass = 'bg-warning';
+                                    text = 'Berhenti';
+                                    break;
+                                case 'diam':
+                                    badgeClass = 'bg-dark';
+                                    text = 'Diam';
+                                    break;
+                            }
+                            value = `<span class="badge ${badgeClass}">${text}</span>`;
+                        }
+
+                        // Kolom map_link
+                        if (key === 'map_link') {
+                            const lat = row.latitude;
+                            const lon = row.longitude;
+                            if (lat && lon) {
+                                value = `<a href="https://www.google.com/maps?q=${lat},${lon}" target="_blank"><i class="mdi mdi-google-maps me-sm-1"></i></a>`;
+                            } else {
+                                value = '-';
+                            }
+                            tdStyle = 'style="text-align:center;"';
+                        }
+
+                        return `<td ${tdStyle}>${value}</td>`;
+                    }).join('') +
+                    '</tr>';
+
+                }).join('')
+            );
+
+            $('#previewTableContainer').removeClass('d-none');
+
+            // Inisialisasi atau reinit DataTable
+            $('#previewTable').DataTable({
+                //destroy: true, // penting agar bisa dipanggil ulang
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel',
+                {
+                    extend: 'pdf',
+                    text: 'PDF',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    title: 'Laporan Historical',
+                    customize: function (doc) {
+                    doc.defaultStyle.fontSize = 8;
+                    doc.styles.tableHeader.fontSize = 9;
+                    doc.styles.tableHeader.alignment = 'left';
+                    }
+                },
+                'print'
+                ],
+                responsive: false,
+                scrollX: true,
+                pageLength: 25,
+                ordering: false,
+                language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ entri",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                paginate: { previous: "Sebelumnya", next: "Berikutnya" }
+                }
+            });
+
+            } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops!',
+                text: 'Data tidak ditemukan.',
+                confirmButtonColor: '#3085d6',
+            });
+
+            }
+        },
+        error: function() {
+            $('#loading').hide();
+            alert('Terjadi kesalahan saat memuat data.');
+        }
+        });
+    }
+  }
+
+
+</script>
+
+@endpush
+
+
+
+
+
+
+
+
+
