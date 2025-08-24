@@ -83,11 +83,6 @@
                                     <div class="col-lg-12 d-flex justify-content-between mb-3">
                                         <button class="btn btn-primary" type="submit"><i class="mdi mdi-download-circle me-sm-1"></i> Unduh Laporan Excel</button>
                                         
-                                        <!-- Tombol Cetak -->
-                                        <a href="javascript:void(0)" id="export-pdf" class="btn btn-secondary" type="button">
-                                            <i class="mdi mdi-printer me-sm-1"></i> Cetak Laporan
-                                        </a>
-                                    
                                         <button id="showButton" type="button" class="btn btn-warning">
                                             <i class="mdi mdi-eye me-sm-1"></i> Tampilkan List
                                         </button>
@@ -156,24 +151,7 @@
                 width: '100%',
                 multiple: true,
             });
-            
-            document.getElementById('export-pdf').addEventListener('click', function() {
-                if (validateDates()) {
-                    // Ambil nilai form
-                    const startDate = document.getElementById('start_date').value;
-                    const endDate = document.getElementById('end_date').value;
-                    const groupId = Array.from(document.getElementById('group_id').selectedOptions).map(option => option.value);
-                    const noPol = Array.from(document.getElementById('no_pol').selectedOptions).map(option => option.value);
-
-                    // Bangun URL untuk ekspor PDF dengan parameter
-                    const url = `/export-pdf?start_date=${startDate}&end_date=${endDate}&group_id[]=${groupId.join('&group_id[]=')}&no_pol[]=${noPol.join('&no_pol[]=')}`;
-                    
-                    // Arahkan ke URL tersebut
-                    window.open(url, "_blank");
-                }
-
-            });
-
+           
             // Mengatasi pemilihan "All"
             $('#no_pol').on('change', function() {
                 var selectedValuesNopol = $(this).val(); // Ambil nilai yang dipilih

@@ -29,37 +29,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $customer_id = auth()->user()->customer_id;
-        
-        if ($customer_id == 1) {
-            // Ambil data dari model Traccar
-            // $items = DB::table('traccars')
-            //     ->join('devices', 'traccars.device_id', '=', 'devices.id')
-            //     ->where('traccars.active', 1) 
-            //     ->select('traccars.*', 'devices.sim_number') 
-            //     ->get();
+        $groups = Group::all();
 
-            $groups = Group::all();
-
-        } else {
-            // $items = DB::table('traccars')
-            //     ->join('devices', 'traccars.device_id', '=', 'devices.id')
-            //     ->where('traccars.customer_id', $customer_id)
-            //     ->where('traccars.active', 1)
-            //     ->select('traccars.*', 'devices.sim_number')
-            //     ->get();
-            $groups = Group::where('customer_id', $customer_id)
-                    // ->where('status', 1)
-                    ->get();
-
-        }
-        // // Proses data untuk menghitung waktu yang telah berlalu
-        // $items->transform(function($item) {
-        //     $time = Carbon::parse($item->time); // Waktu dari database
-        //     $now = Carbon::now(); // Waktu saat ini
-        //     $item->time_diff = $time->locale('id')->diffForHumans($now); // Selisih waktu
-        //     return $item;
-        // });
 
         // Kirim data yang sudah diproses ke view
         return view('pages.reports.last_position', [
@@ -133,8 +104,8 @@ class ReportController extends Controller
     {
         $startDate = Carbon::parse($request->input('start_date'))->startOfDay(); // Mulai dari jam 00:00:00
         $endDate = Carbon::parse($request->input('end_date'))->endOfDay(); //berakhir pada 23:59:00
-        $nopol = $request->input('no_pol');;
-        $group = $request->input('group_id');;
+        $nopol = $request->input('no_pol');
+        $group = $request->input('group_id');
         $customer = auth()->user()->customer_id;
 
         //var_dump($group); exit;
@@ -142,32 +113,7 @@ class ReportController extends Controller
         return Excel::download(new ExportJarak($startDate, $endDate, $nopol, $group, $customer), 'laporan_jarak_tempuh_kendaraan.xlsx');
     }
 
-    // report jarak pdf
-    // public function exportJarakPDF(ReportRequest $request)
-    // {
-    //     $startDate = $request->input('start_date');
-    //     $endDate = $request->input('end_date');
-    //     $nopol = $request->input('no_pol');;
-    //     $group = $request->input('group_id');;
-    //     $customer = auth()->user()->customer_id;
-
-    //     // Ambil data sesuai dengan parameter
-    //     $data = (new ExportJarak($startDate, $endDate, $nopol, $group, $customer))->collection();
-
-    //     // Variabel untuk total jarak per nopol
-    //     $totalDistancePerNoPol = 0;
-
-    //     foreach ($data as $item) {
-    //         $totalDistancePerNoPol += $item->total_distance;
-    //     }
-
-    //     // Rendering view ke PDF
-    //     $pdf = PDF::loadView('pages.reports.jarak_pdf', compact('data', 'totalDistancePerNoPol'));
-
-    //     // Download PDF
-    //     return $pdf->download('jarak_tempuh_kendaraan.pdf');
-    // }
-
+    
     public function exportJarakPDF(ReportRequest $request)
     {
         $startDate = Carbon::parse($request->input('start_date'))->startOfDay(); // Mulai dari jam 00:00:00
@@ -247,76 +193,9 @@ class ReportController extends Controller
         ]);
 
     }
-
-    public function cetakKecepatan(ReportRequest $request)
-    {
-        $startDate = Carbon::parse($request->input('start_date'))->startOfDay(); // Mulai dari jam 00:00:00
-        $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
-        $no_pol = $request->input('no_pol');       
-        $customer = auth()->user()->customer_id; 
-
-        $histories = History::where('vehicle_id', $no_pol)
-                    ->where('customer_id', $customer)
-                    ->whereBetween('time', [$startDate, $endDate])
-                    ->orderBy('time')
-                    ->get();        
-
-        return view('pages.reports.cetak_kecepatan')->with([
-            'data' => $histories,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-        ]);
-
-    }
-
-    public function cetakHistorical(ReportRequest $request)
-    {
-        $startDate = Carbon::parse($request->input('start_date'))->startOfDay(); // Mulai dari jam 00:00:00
-        $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
-        $no_pol = $request->input('no_pol');       
-        $customer = auth()->user()->customer_id; 
-
-        $histories = History::where('vehicle_id', $no_pol)
-                    ->where('customer_id', $customer)
-                    ->whereBetween('time', [$startDate, $endDate])
-                    ->orderBy('time')
-                    ->get();        
-
-        return view('pages.reports.cetak_historical')->with([
-            'data' => $histories,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-        ]);
-
-    }
-    
-    public function cetakPosisiAkhir(Request $request)
-    {        
-        $group = $request->group_id;      
-        $customer = auth()->user()->customer_id;
-
-        $traccars = Traccar::join('vehicles', 'traccars.vehicle_id', '=', 'vehicles.id')
-                    ->where('traccars.customer_id', $customer)
-                    ->select('traccars.*')
-                    ->orderBy('traccars.time');
-
-        // Jika group_id bukan 1, gunakan whereIn()
-        if (!in_array(1, (array) $group)) {
-            $traccars->whereIn('vehicles.group_id', (array) $group);
-        }
-
-        $traccars = $traccars->get();
-    
-        return view('pages.reports.cetak_last_position')->with([
-            'data' => $traccars,
-        ]);
-    }
-
-
-    
+        
     public function listDistance(Request $request)
     {
-        $customer = auth()->user()->customer_id;
         $startDate = $request->start_date;
         $endDate = $request->end_date;
         $nopol = $request->no_pol;
@@ -330,7 +209,6 @@ class ReportController extends Controller
                         DB::raw('DATE(time) as date'), 
                         DB::raw('SUM(distance) as total_distance')
                     )
-                    ->where('customer_id', $customer)
                     // ->whereIn('vehicle_id', $nopol)
                     ->whereDate('time', '>=', $startDate)
                     ->whereDate('time', '<=', $endDate)
@@ -343,8 +221,7 @@ class ReportController extends Controller
                     DB::raw('DATE(histories.time) as date'), 
                     DB::raw('SUM(histories.distance) as total_distance')
                 )
-                ->join('vehicles as v', 'histories.vehicle_id', '=', 'v.id') // Join tabel vehicles berdasarkan vehicle_id
-                ->where('histories.customer_id', $customer)
+                ->join('vehicles as v', 'histories.vehicle_id', '=', 'v.id') 
                 ->whereIn('v.group_id', $group)
                 ->whereDate('histories.time', '>=', $startDate)
                 ->whereDate('histories.time', '<=', $endDate)
@@ -359,7 +236,6 @@ class ReportController extends Controller
                         DB::raw('DATE(time) as date'), 
                         DB::raw('SUM(distance) as total_distance')
                     )
-                    ->where('customer_id', $customer)
                     ->whereIn('vehicle_id', $nopol)
                     ->whereDate('time', '>=', $startDate)
                     ->whereDate('time', '<=', $endDate)
@@ -374,26 +250,9 @@ class ReportController extends Controller
         ]);
     }
 
-    // public function exportLaporanParkir(ReportRequest $request) 
-    // {
-    //     $startDate = $request->input('start_date');
-    //     $endDate = $request->input('end_date');
-    //     $no_pol = $request->input('no_pol');
-    
-    //     return Excel::download(new ExportParkir($startDate, $endDate, $no_pol), 'laporan_parkir_kendaraan.xlsx');
-    // }
-    
-    // public function laporanHutang() 
-    // {
-    //     return view('pages.reports.hutang');
-    // } 
-
     public function historicalReport() 
-    {
-        $customer_id = auth()->user()->customer_id;
-                
-        $vehicles = Vehicle::where('customer_id', $customer_id)
-                    ->where('status', 1)
+    {                
+        $vehicles = Vehicle::where('status', 1)
                     ->get();
         
         return view('pages.reports.historical_report')->with([
@@ -402,11 +261,8 @@ class ReportController extends Controller
     }
 
     public function laporanKecepatan() 
-    {
-        $customer_id = auth()->user()->customer_id;
-                
-        $vehicles = Vehicle::where('customer_id', $customer_id)
-                    ->where('status', 1)
+    {                
+        $vehicles = Vehicle::where('status', 1)
                     ->get();
         
         return view('pages.reports.kecepatan')->with([
@@ -415,15 +271,11 @@ class ReportController extends Controller
     }
 
     public function laporanJarak() 
-    {
-        $customer_id = auth()->user()->customer_id;
-                
-        $vehicles = Vehicle::where('customer_id', $customer_id)
-                    ->where('status', 1)
+    {                
+        $vehicles = Vehicle::where('status', 1)
                     ->get();
 
-        $groups = Group::where('customer_id', $customer_id)
-                    // ->where('status', 1)
+        $groups = Group::where('status', 1)
                     ->get();
         
         return view('pages.reports.jarak')->with([
@@ -434,18 +286,15 @@ class ReportController extends Controller
 
     public function getVehicleByGroup($groupId)
     {
-        $customer_id = auth()->user()->customer_id;
-
             // Jika hanya satu group_id yang dipilih
             if ($groupId == 1) {
                 //var_dump($groupId); exit;
-                $vehicles = Vehicle::where('customer_id', $customer_id)->get();
+                $vehicles = Vehicle::where('status', 1)->get();
             } else {
                 // var_dump($groupId); exit;
                 $groupId = explode(',', $groupId);
                 //var_dump($groupId); exit;
                 $vehicles = Vehicle::whereIn('group_id', $groupId)
-                    ->where('customer_id', $customer_id)
                     ->get();
             }       
 
@@ -455,10 +304,7 @@ class ReportController extends Controller
 
     public function laporanParkir() 
     {
-        $customer_id = auth()->user()->customer_id;
-                
-        $vehicles = Vehicle::where('customer_id', $customer_id)
-                    ->where('status', 1)
+        $vehicles = Vehicle::where('status', 1)
                     ->get();
         
         return view('pages.reports.parkir')->with([
@@ -526,7 +372,6 @@ class ReportController extends Controller
 
     public function tampilkanListParkir(Request $request)
     {
-        $customer = auth()->user()->customer_id;
         // Pastikan startDate mulai dari jam 00:00:00 dan endDate sampai jam 23:59:59
         $startDate = Carbon::parse($request->start_date)->startOfDay(); // 00:00:00
         $endDate = Carbon::parse($request->end_date)->endOfDay(); // 23:59:59
@@ -598,12 +443,9 @@ class ReportController extends Controller
 
     public function listHistorical()
     {
-        // cek account mana yang sedang login
-        $customer_id = auth()->user()->customer_id;
 
         // $data = History::where('customer_id', $customer_id)->get();
-        $data = History::where('customer_id', $customer_id)
-                ->whereDate('time', today())
+        $data = History::where('time', today())
                 ->get();
 
         return DataTables::of($data)
@@ -620,9 +462,7 @@ class ReportController extends Controller
     public function listParkingDatatable(Request $request)
     {
         if ($request->ajax()) {
-            $customer_id = auth()->user()->customer_id;
-            $vehicles = Vehicle::where('customer_id', $customer_id)
-                        ->where('status', 1)
+            $vehicles = Vehicle::where('status', 1)
                         ->get();
 
             $data = [];
@@ -665,9 +505,7 @@ class ReportController extends Controller
     }
 
     public function tampilkanListKecepatan(Request $request)
-    {
-        $customer = auth()->user()->customer_id;
-        
+    {        
         // Pastikan startDate mulai dari jam 00:00:00 dan endDate sampai jam 23:59:59
         $startDate = Carbon::parse($request->start_date)->startOfDay(); // 00:00:00
         $endDate = Carbon::parse($request->end_date)->endOfDay(); // 23:59:59
@@ -675,7 +513,6 @@ class ReportController extends Controller
         $no_pol = $request->no_pol;
 
         $speeds = History::where('vehicle_id', $no_pol)
-                    ->where('customer_id', $customer)
                     ->whereBetween('time', [$startDate, $endDate])
                     ->orderBy('time')
                     ->get();
@@ -686,9 +523,7 @@ class ReportController extends Controller
     }
 
     public function tampilkanListHistorical(Request $request)
-    {
-        $customer = auth()->user()->customer_id;
-        
+    {        
         // Pastikan startDate mulai dari jam 00:00:00 dan endDate sampai jam 23:59:59
         $startDate = Carbon::parse($request->start_date)->startOfDay(); // 00:00:00
         $endDate = Carbon::parse($request->end_date)->endOfDay(); // 23:59:59
@@ -696,7 +531,6 @@ class ReportController extends Controller
         $no_pol = $request->no_pol;
 
         $speeds = History::where('vehicle_id', $no_pol)
-                    ->where('customer_id', $customer)
                     ->whereBetween('time', [$startDate, $endDate])
                     ->orderBy('time')
                     ->get();
@@ -709,11 +543,9 @@ class ReportController extends Controller
     public function tampilkanListPosisiAkhir(Request $request)
     {
         $group = $request->group_id;      
-        $customer = auth()->user()->customer_id;
 
         $traccars = Traccar::leftjoin('vehicles', 'traccars.vehicle_id', '=', 'vehicles.id')
                     ->leftjoin('devices', 'traccars.device_id', '=', 'devices.id')
-                    ->where('traccars.customer_id', $customer)
                     ->where('traccars.active', 1)
                     ->select('traccars.*','devices.sim_number');
 

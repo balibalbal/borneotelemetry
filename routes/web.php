@@ -92,11 +92,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/vehicle/export', [VehicleController::class, 'exportVehicle'])->name('vehicles.export');
     Route::get('/group-vehicle/{customerId}', [VehicleController::class, 'getGroupsByCustomer']); 
     Route::get('/vehiclebygroup/{groupId}', [ReportController::class, 'getVehicleByGroup']); 
-    Route::get('/export-pdf', [ReportController::class, 'exportJarakPDF']);
-    Route::get('/cetak-parkir', [ReportController::class, 'cetakParkir']);
-    Route::get('/cetak-kecepatan', [ReportController::class, 'cetakKecepatan']);
-    Route::get('/cetak-historical', [ReportController::class, 'cetakHistorical']);
-    Route::get('/cetak-posisi-akhir', [ReportController::class, 'cetakPosisiAkhir']);
     Route::get('/get-nearby-vehicles', [TraccarController::class, 'getNearestVehicles']);
     Route::get('/get-traccar-data', [TraccarController::class, 'getData']);
     Route::get('/realtime', [TraccarController::class, 'webSocket']);

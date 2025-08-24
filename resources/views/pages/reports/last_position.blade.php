@@ -71,11 +71,6 @@
                                     <div class="col-lg-12 d-flex justify-content-between mb-0 mt-3">
                                         <button class="btn btn-primary" type="submit"><i class="mdi mdi-download-circle me-sm-1"></i> Unduh Laporan Excel</button>
                                         
-                                        <!-- Tombol Cetak -->
-                                        <a href="javascript:void(0)" id="cetak-posisi-akhir" class="btn btn-secondary" type="button">
-                                            <i class="mdi mdi-printer me-sm-1"></i> Cetak Laporan
-                                        </a>
-                                    
                                         <button id="showButton" type="button" class="btn btn-warning">
                                             <i class="mdi mdi-eye me-sm-1"></i> Tampilkan List
                                         </button>
@@ -208,22 +203,7 @@
                     $('#group_id option[value="1"]').prop('disabled', false); // Aktifkan "All" jika tidak ada yang dipilih
                 }
             });
-
-            document.getElementById('cetak-posisi-akhir').addEventListener('click', function() {
-               if (validateGroup()) {
-                    // Ambil nilai form
-                    
-                    const groupId = Array.from(document.getElementById('group_id').selectedOptions).map(option => option.value);
-
-                    // Bangun URL untuk ekspor PDF dengan parameter
-                    const url = `/cetak-posisi-akhir?group_id[]=${groupId.join('&group_id[]=')}`;
-                    
-                    // Arahkan ke URL tersebut
-                    window.open(url, "_blank");
-               }
-
-            });
-
+           
             $('#showButton').click(function () {
                 if (validateGroup()) {
                     $('#dataTable_processing2').show();

@@ -68,11 +68,6 @@
                                     <div class="col-lg-12 d-flex justify-content-between mb-0 mt-3">
                                         <button class="btn btn-primary" type="submit"><i class="mdi mdi-download-circle me-sm-1"></i> Unduh Laporan Excel</button>
                                         
-                                        <!-- Tombol Cetak PDF -->
-                                        <a href="javascript:void(0)" id="cetak-parkir" class="btn btn-secondary" type="button">
-                                            <i class="mdi mdi-printer me-sm-1"></i> Cetak Laporan
-                                        </a>
-                                    
                                         <button id="showButton" type="button" class="btn btn-warning">
                                             <i class="mdi mdi-eye me-sm-1"></i> Tampilkan List
                                         </button>
@@ -135,22 +130,6 @@
                 placeholder: 'Pilih Kendaraan',
                 dropdownAutoWidth: true,
                 width: '100%',
-            });
-
-            document.getElementById('cetak-parkir').addEventListener('click', function() {
-                if (validateDates()) {
-                    // Ambil nilai form
-                    const startDate = document.getElementById('start_date').value;
-                    const endDate = document.getElementById('end_date').value;
-                    const noPol = document.getElementById('no_pol').value;
-
-                    // Bangun URL untuk ekspor PDF dengan parameter
-                    const url = `/cetak-parkir?start_date=${startDate}&end_date=${endDate}&no_pol=${noPol}`;
-                    
-                    // Arahkan ke URL tersebut
-                    window.open(url, "_blank");
-                }
-
             });
 
             $('#showButton').click(function () {
