@@ -27,7 +27,7 @@ class ReportPosisiAkhir implements FromCollection, WithHeadings, WithEvents
     public static function getData($filters)
     {
         $groupIds = $filters['group_id'] ?? [];
-
+dd($groupIds); exit;
         $whereClause = '';
         $bindings = [];
 
