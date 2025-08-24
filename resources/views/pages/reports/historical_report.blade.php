@@ -98,7 +98,7 @@
                               <th>Latitude</th>
                               <th>Longitude</th>
                               <th>Speed(Km/h)</th>
-                              <th>Distance (KM)</th>
+                              <th>Angle/Arah (Derajat)</th>
                               <th>Alamat</th>
                               <th>Status</th>
                           </tr>
@@ -163,7 +163,7 @@
                                     item.latitude,
                                     item.longitude,
                                     item.speed,
-                                    item.distance,
+                                    item.course,
                                     // formatDateTime(item.start_time),
                                     // formatDateTime(item.end_time),
                                     item.address,
