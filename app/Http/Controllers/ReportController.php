@@ -44,14 +44,20 @@ class ReportController extends Controller
         return Excel::download(new ExportLastPosition, 'Laporan_Posisi_Akhir.xlsx');
     }
 
-    public function exportLaporanHistorical(ReportRequest $request) 
+    public function exportLaporanHistorical(Request $request)
     {
-        $startDate = Carbon::parse($request->input('start_date'))->startOfDay(); // 00:00:00
-        $endDate = Carbon::parse($request->input('end_date'))->endOfDay(); // 23:59:59
-        $no_pol = $request->input('no_pol');
-        //var_dump($no_pol); exit;
-    
-        return Excel::download(new ExportHistorical($startDate, $endDate, $no_pol), 'laporan_historical.xlsx');
+        $filters = $request->all();
+
+        ini_set('max_execution_time', 1800);
+        ini_set('memory_limit', '1G');
+
+        $allData = \App\Exports\ReportHistorical::getData($filters);
+        $chunks = $allData->chunk(500);
+
+        return Excel::download(
+            new \App\Exports\ReportHistoricalChunk($chunks),
+            'Laporan_Historical_' . now()->format('Y-m-d_H-i-s') . '.xlsx'
+        );
     }
 
     public function laporanDump() 
