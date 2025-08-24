@@ -238,7 +238,7 @@
             const labelMapping = {
                 time: 'Tanggal',
                 no_pol: 'Nopol',
-                course: 'Angle/Arah(Derajat)',
+                course: 'Angle/Arah',
                 ignition_status: 'Igniton',
                 speed: 'Kecepatan',
                 map_link: 'Google Maps',
