@@ -17,8 +17,6 @@ use App\Models\Vehicle;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
-use PHPUnit\Event\Tracer\Tracer;
 
 class ReportController extends Controller
 {
@@ -29,7 +27,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $groups = Group::all();
+        $groups = Group::where('status', 1)->get();
 
 
         // Kirim data yang sudah diproses ke view
@@ -39,9 +37,20 @@ class ReportController extends Controller
         ]);
     }
 
-    public function exportLastPosition() 
+    public function exportLastPosition(Request $request)
     {
-        return Excel::download(new ExportLastPosition, 'Laporan_Posisi_Akhir.xlsx');
+        $filters = $request->all();
+
+        ini_set('max_execution_time', 1800);
+        ini_set('memory_limit', '1G');
+
+        $allData = \App\Exports\ReportPosisiAkhir::getData($filters);
+        $chunks = $allData->chunk(500);
+
+        return Excel::download(
+            new \App\Exports\ReportPosisiAkhirChunk($chunks),
+            'Laporan_Posisi Akhir_' . now()->format('Y-m-d_H-i-s') . '.xlsx'
+        );
     }
 
     public function exportLaporanHistorical(Request $request)

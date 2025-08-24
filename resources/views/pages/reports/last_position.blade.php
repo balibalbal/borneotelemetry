@@ -1,291 +1,183 @@
 @push('style')
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
   <style>
-        .status-red {
-            background-color: #fd051a !important;
-            color: #faf7f7 !important;
-        }
-
-        .status-yellow {
-            background-color: #ffc70d !important;
-            color: #fffefc !important;
-        }
-
-        .status-default {
-            background-color: #ffffff;
-        }
-        #dataTable_processing {
-        display: none !important;
-        }
-        #no_pol + .select2-container .select2-selection--multiple {
-            /* min-height: 40px; */
-            padding: 10px;
-        }
-        #group_id + .select2-container .select2-selection--multiple {
+    #group_id + .select2-container .select2-selection--multiple {
             /* height: 45px; */
             padding: 10px;
         }
-    </style>
+
+    #loading {
+      display: none;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 @endpush
 
 @extends('layouts.admin')
-@section('title', 'Laporan Posisi Kendaraan')
+@section('title', 'Laporan Posisi Akhir')
+
 @section('content')
 <div class="container-fluid">
-    @if(session('pesan'))
+
+  @if(session('pesan'))
     <div class="alert alert-success alert-dismissible" role="alert">
-        <i class="mdi mdi-check-circle"></i> {{ session('pesan') }}.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-        </button>
+      <i class="mdi mdi-check-circle"></i> {{ session('pesan') }}.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    @endif
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <div class="col-lg-12 col-sm-6">
-                <div class="card h-100">
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="card-body mb-0">
-                        <div class="card-info mb-0 py-2 mb-lg-1 mb-xl-3">
-                            <h5>Laporan Posisi Akhir Kendaraan</h5><hr>
-                            <form class="mb-0 mt-3" action="{{ route('report.exportLastPosition') }}" method="GET" onsubmit="return validateDates()">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="input-group input-group-merge mb-4">
-                                            <div class="form-floating form-floating-outline">
-                                              <select name="group_id" id="group_id" class="select2 form-select form-control @error('group_id') is-invalid @enderror" data-allow-clear="true" required multiple>
+  @endif
+
+  <div class="row">
+    <div class="col-lg-12 col-12">
+      <div class="card mb-3">
+        <div class="card-header header-elements">
+          <div>
+            <h5 class="card-title mb-0">Laporan Posisi Akhir</h5>
+            {{-- <small class="text-muted">Laporan yang dapat di-generate ke Excel maksimal 1 bulan</small> --}}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <form action="{{ route('report.exportLastPosition') }}" method="GET" onsubmit="return validateDates()">
+            <div class="card border border-primary shadow-sm">
+              <div class="card-body">
+                <div class="row">
+
+                  <div class="col-lg-12">
+                        <div class="input-group input-group-merge mb-4">
+                            <div class="form-floating form-floating-outline">
+                                <select name="group_id[]" id="group_id" class="select2 form-select form-control @error('group_id') is-invalid @enderror" data-allow-clear="true" required multiple>
                                                 {{-- <option value="">Pilih Group</option> --}}
-                                                <option value="1">Semua Group</option>
+                                                <option value="0">Semua Group</option>
                                                 @foreach($groups as $group)
                                                     <option value="{{ $group->id }}" data-no-pol="{{ $group->name }}">
                                                         {{ $group->name }} 
                                                     </option>
                                                 @endforeach
-                                              </select>                        
-                                              <label for="group_id">Group</label>
-                                              @error('group_id')<div class="text-danger">{{ $message }}</div> @enderror
-                                            </div>
-                                        </div>
-                                    </div>                                     
-                                </div>
-                                <div class="row">                                 
-                                    <div class="col-lg-12 d-flex justify-content-between mb-0 mt-3">
-                                        <button class="btn btn-primary" type="submit"><i class="mdi mdi-download-circle me-sm-1"></i> Unduh Laporan Excel</button>
-                                        
-                                        <button id="showButton" type="button" class="btn btn-warning">
-                                            <i class="mdi mdi-eye me-sm-1"></i> Tampilkan List
-                                        </button>
-                                    </div>
-                                </div>
-                                <!-- Notifikasi -->
-                                <div id="dateAlert" class="alert alert-danger alert-dismissible d-none mt-4" role="alert">
-                                  Tanggal awal dan tanggal akhir harus berada dalam bulan yang sama.
-                                  <button type="button" class="btn-close" aria-label="Close" onclick="closeAlert()"></button>
-                                </div>
-                              </form>
+                                </select>                        
+                                <label for="group_id">Group</label>
+                                @error('group_id')<div class="text-danger">{{ $message }}</div> @enderror
+                            </div>
                         </div>
-                      </div>
-                    </div>
-                    {{-- <div class="col-4 text-end d-flex align-items-end justify-content-center">
-                      <div class="card-body pb-0 pt-3 position-absolute bottom-0">
-                        <img src="{{ url('backend/assets/img/illustrations/card-ratings-illustration.png') }}" alt="Assign Order" width="125">
-                      </div>
-                    </div> --}}
                   </div>
-                </div>
-            </div>
+
+                  <!-- Tombol Unduh -->
+                  <div class="col-lg-2 mt-3">
+                    <button class="btn btn-primary w-100" type="submit">
+                      <i class="mdi mdi-download-circle me-sm-1"></i> Unduh
+                    </button>
+                  </div>
+
+                  <!-- Tombol Preview -->
+                  <div class="col-lg-2 mt-3">
+                    <button class="btn btn-dark w-100" type="button" onclick="handlePreview()">
+                      <i class="mdi mdi-eye-outline me-sm-1"></i> Tampilkan
+                    </button>
+                  </div>
+
+                  <!-- Alert Error -->
+                  <div class="col-12">
+                    <div id="dateAlert" class="alert alert-danger alert-dismissible d-none mt-3" role="alert">
+                      <button type="button" class="btn-close" aria-label="Close" onclick="closeAlert()"></button>
+                    </div>
+                  </div>
+
+                </div> <!-- row -->
+              </div> <!-- card-body -->
+            </div> <!-- card -->
+          </form>
         </div>
-        <div class="card-body">
-            <div id="tableContainer" class="d-none">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal</th>
-                                <th>Update</th>
-                                <th>Nopol</th>
-                                {{-- <th>Latitude</th>
-                                <th>Longitude</th> --}}
-                                <th>Speed (Km/h)</th>
-                                <th>Distance (KM)</th>
-                                <th>No. Tlp</th>
-                                <th>Alamat</th>
-                                <th>Status</th>
-                                <th>Maps</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            {{-- @foreach($items as $item)
-                            @php
-                                $now = \Carbon\Carbon::now();
-                                $time = \Carbon\Carbon::parse($item->time);
-                                $diffInHours = $time->diffInHours($now);
-                                $statusClass = 'status-default'; // Kelas default
-                    
-                                if ($diffInHours > 24) {
-                                    $statusClass = 'status-red'; // Lebih dari 24 jam
-                                } elseif ($diffInHours > 12) {
-                                    $statusClass = 'status-yellow'; // Lebih dari 12 jam
-                                }
-                            @endphp
-                            <tr>
-                                <td>{{ $item->time }}</td>
-                                <td class="{{ $statusClass }}">{{ $item->time_diff }}</td>
-                                <td>{{ $item->no_pol }}</td>
-                                <td>{{ $item->speed }} </td>
-                                <td>{{ $item->total_distance }} </td>
-                                <td>{{ $item->sim_number }} </td>
-                                <td>{{ $item->address }}</td>
-                                <td>
-                                    @if($item->status == 'bergerak')
-                                        <span class="badge bg-success">Bergerak</span>
-                                    @elseif($item->status == 'mati')
-                                        <span class="badge bg-danger">Mati</span>
-                                    @elseif($item->status == 'diam')
-                                        <span class="badge bg-dark">Diam</span>
-                                    @elseif($item->status == 'berhenti')
-                                        <span class="badge bg-warning">Berhenti</span>
-                                    @endif
-                                </td>                            
-                                <td>
-                                    <a href="https://www.google.com/maps?q={{ $item->latitude }},{{ $item->longitude }}" target="_blank" class="btn btn-icon btn-label-success waves-effect" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Lihat Di Google Map">
-                                        <span class="tf-icons mdi mdi-google-maps"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach --}}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div id="dataTable_processing2" class="dataTables_processing" style="width: 6rem;">
-            <img class="card-img-top" src="/backend/assets/img/icons/mtrack-logo-animasi.gif" alt="Card image cap">
-          </div>
+      </div>
     </div>
+  </div>
+
+  <!-- PREVIEW TABLE -->
+  <div class="row">
+    <div id="previewTableContainer" class="mt-2 mb-4 d-none">
+      <div class="card">
+        <div class="card-body table-responsive">
+          <table class="table table-bordered table-hover" id="previewTable">
+            <thead>
+              <tr id="previewHead"></tr>
+            </thead>
+            <tbody id="previewBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="row">
+    <div id="loading">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
 
 </div>
+
+  
 @endsection
 
 @push('scripts')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#dataTable_processing2').hide();
 
-            $('#group_id').select2({
-                allowClear: true,
-                placeholder: 'Pilih Group',
-                dropdownAutoWidth: true,
-                width: '100%',
-                multiple: true,
-            });
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            $('#group_id').on('change', function() {
-                var selectedValuesGroup = $(this).val(); // Ambil nilai yang dipilih
+<script>
+    $(document).ready(function() {    
+        $('#loading').hide();
+        $('#group_id').select2({
+                    allowClear: true,
+                    placeholder: 'Pilih Group',
+                    dropdownAutoWidth: true,
+                    width: '100%',
+                    multiple: true,
+                });
 
-                // console.log('Selected group_id:', selectedValuesGroup);
+                $('#group_id').on('change', function() {
+                    var selectedValuesGroup = $(this).val(); // Ambil nilai yang dipilih
 
-                if (selectedValuesGroup && selectedValuesGroup.includes('1')) {
-                    // Jika "All" dipilih, nonaktifkan semua opsi selain "All"
-                    $('#group_id option').not('[value="1"]').prop('disabled', true);
-                } else {
-                    // Jika "All" tidak dipilih, aktifkan semua opsi
-                    $('#group_id option').prop('disabled', false);
-                }
+                    // console.log('Selected group_id:', selectedValuesGroup);
 
-                // Jika selain "All" yang dipilih, maka "All" menjadi disable
-                if (selectedValuesGroup.length > 1) {
-                    $('#group_id option[value="1"]').prop('disabled', true); // Nonaktifkan "All"
-                } else {
-                    $('#group_id option[value="1"]').prop('disabled', false); // Aktifkan "All" jika tidak ada yang dipilih
-                }
-            });
-           
-            $('#showButton').click(function () {
-                if (validateGroup()) {
-                    $('#dataTable_processing2').show();
+                    if (selectedValuesGroup && selectedValuesGroup.includes('1')) {
+                        // Jika "All" dipilih, nonaktifkan semua opsi selain "All"
+                        $('#group_id option').not('[value="0"]').prop('disabled', true);
+                    } else {
+                        // Jika "All" tidak dipilih, aktifkan semua opsi
+                        $('#group_id option').prop('disabled', false);
+                    }
 
-                    $.ajax({
-                        url: '/report-last-position',
-                        type: 'GET',
-                        data: {
-                            group_id: $('#group_id').val()
-                        },
-                        success: function (response) {
-                            console.log(response);
+                    // Jika selain "All" yang dipilih, maka "All" menjadi disable
+                    if (selectedValuesGroup.length > 1) {
+                        $('#group_id option[value="0"]').prop('disabled', true); // Nonaktifkan "All"
+                    } else {
+                        $('#group_id option[value="0"]').prop('disabled', false); // Aktifkan "All" jika tidak ada yang dipilih
+                    }
+                });
 
-                            $('#dataTable_processing2').hide();
-                            $('#tableContainer').removeClass('d-none');
-
-                            var dataTable = $('#dataTable').DataTable();
-                            dataTable.clear().draw();
-
-                            response.data.forEach(function (item, index) {
-                                let mapsLink = `<a href="https://www.google.com/maps?q=${item.latitude},${item.longitude}" target="_blank"><i class="mdi mdi-google-maps me-sm-1"></i></a>`;
-
-                                // **Tambahkan badge untuk status**
-                                let statusBadge = '';
-                                if (item.status === 'bergerak') {
-                                    statusBadge = `<span class="badge bg-success">Bergerak</span>`;
-                                } else if (item.status === 'diam') {
-                                    statusBadge = `<span class="badge bg-dark">Diam</span>`;
-                                } else if (item.status === 'mati') {
-                                    statusBadge = `<span class="badge bg-danger">Mati</span>`;
-                                } else if (item.status === 'berhenti') {
-                                    statusBadge = `<span class="badge bg-warning text-dark">Berhenti</span>`;
-                                }
-                                
-                                let newRow = dataTable.row.add([
-                                    index + 1, // Nomor urut
-                                    item.time,
-                                    item.time_diff, // Kolom selisih waktu
-                                    item.no_pol,
-                                    item.speed,
-                                    item.total_distance,
-                                    item.sim_number,
-                                    item.address,
-                                    statusBadge,
-                                    mapsLink
-                                ]).draw(false).node(); // Dapatkan elemen <tr>
-
-                                // Simpan diff_hours sebagai atribut data di <tr>
-                                $(newRow).attr('data-diff-hours', item.diff_hours);
-                            });
-
-                            // **Ubah warna setelah DataTable selesai menggambar ulang tabel**
-                            dataTable.draw();
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error fetching data:', error);
-                            $('#dataTable_processing2').hide();
-                        }
-                    });
-                }
-            });
-
-            // **Gunakan drawCallback untuk mewarnai kolom time_diff**
-            $('#dataTable').DataTable({
-                drawCallback: function () {
-                    $('#dataTable tbody tr').each(function () {
-                        let diffHours = $(this).attr('data-diff-hours');
-
-                        if (diffHours > 24) {
-                            $(this).find('td:eq(2)').css('background-color', 'red').css('color', 'white');
-                        } else if (diffHours > 12) {
-                            $(this).find('td:eq(2)').css('background-color', 'orange').css('color', 'white');
-                        }
-                    });
-                }
-            });
-
-
-
+        $('form').on('submit', function() {
+            // Pastikan group_id dikirim sebagai array
+            if ($('#group_id').val() && !Array.isArray($('#group_id').val())) {
+            $('#group_id').val([$('#group_id').val()]);
+            }
         });
+    });
 
-        function validateGroup() {
+  function validateGroup() {
             var groupID = document.getElementById("group_id");
             var dateAlert = document.getElementById("dateAlert");
 
@@ -297,11 +189,214 @@
     
             dateAlert.classList.add("d-none"); // Sembunyikan notifikasi jika tanggal valid
             return true; // Izinkan pengiriman formulir
+  }
+
+  function closeAlert() {
+      var dateAlert = document.getElementById("dateAlert");
+      dateAlert.classList.add("d-none"); // Sembunyikan notifikasi
+  }
+  
+
+  function handlePreview() {
+    if (validateGroup()) {
+        const params = {
+        group_id: $('#group_id').val(),
+        };
+
+        // Reset konten & tampilkan loading
+        $('#previewTableContainer').addClass('d-none');
+        $('#previewHead, #previewBody').html('');
+        $('#loading').show();
+
+        $.ajax({
+        url: '/report-last-position',
+        method: 'GET',
+        data: params,
+        success: function(res) {
+            $('#loading').hide();
+
+            if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+            const filtered = res.data.filter(row => Object.keys(row).length > 0);
+            if (filtered.length === 0) {
+                Swal.fire({
+                icon: 'warning',
+                title: 'Oops!',
+                text: 'Data tidak ditemukan.',
+                confirmButtonColor: '#3085d6',
+                });
+                return;
+            }
+
+            const firstValid = filtered[0];
+            let headers = Object.keys(firstValid);
+
+            // Sisipkan 'update_time' setelah 'time'
+            const timeIndex = headers.indexOf('time');
+            if (timeIndex !== -1) {
+            headers.splice(timeIndex + 1, 0, 'update_time');
+            }
+
+            // Tambah map_link di akhir
+            headers.push('map_link');
+
+            const labelMapping = {
+                time: 'Tanggal',
+                update_time: 'Update',
+                no_pol: 'Nopol',
+                speed: 'Kecepatan',
+                map_link: 'Google Maps',
+                address: 'Lokasi'
+            };
+
+            if ($.fn.DataTable.isDataTable('#previewTable')) {
+                $('#previewTable').DataTable().clear().destroy();
+            }
+
+            $('#previewHead').html(
+                headers.map(h => `<th>${labelMapping[h] || h}</th>`).join('')
+            );
+
+            $('#previewBody').html(
+                filtered.map(row => {
+                return '<tr>' +
+                    headers.map(key => {
+                        let value = row[key] ?? '';
+                        let tdStyle = '';
+
+                        // Status badge
+                        if (key === 'status') {
+                            let badgeClass = 'bg-secondary';
+                            let text = 'Tidak Diketahui';
+                            switch (value) {
+                                case 'bergerak':
+                                    badgeClass = 'bg-success';
+                                    text = 'Bergerak';
+                                    break;
+                                case 'mati':
+                                    badgeClass = 'bg-danger';
+                                    text = 'Mati';
+                                    break;
+                                case 'berhenti':
+                                    badgeClass = 'bg-warning';
+                                    text = 'Berhenti';
+                                    break;
+                                case 'diam':
+                                    badgeClass = 'bg-dark';
+                                    text = 'Diam';
+                                    break;
+                            }
+                            value = `<span class="badge ${badgeClass}">${text}</span>`;
+                        }
+
+                        // Kolom waktu relatif
+                        if (key === 'update_time') {
+                            const now = new Date();
+                            const updateTime = new Date(row['time']);
+                            const diffMs = now - updateTime;
+                            const diffHours = diffMs / (1000 * 60 * 60);
+
+                            let text = '';
+                            if (diffMs < 60 * 1000) {
+                                text = `${Math.floor(diffMs / 1000)} detik yang lalu`;
+                            } else if (diffMs < 3600 * 1000) {
+                                text = `${Math.floor(diffMs / (1000 * 60))} menit yang lalu`;
+                            } else if (diffMs < 86400 * 1000) {
+                                text = `${Math.floor(diffMs / (1000 * 60 * 60))} jam yang lalu`;
+                            } else {
+                                text = `${Math.floor(diffMs / (1000 * 60 * 60 * 24))} hari yang lalu`;
+                            }
+
+                            let bgColor = '';
+                            if (diffHours >= 24) {
+                                bgColor = 'background-color: red; color: white;';
+                            } else if (diffHours >= 12) {
+                                bgColor = 'background-color: yellow; color: black;';
+                            }
+
+                            value = text;
+                            tdStyle = `style="text-align:center; ${bgColor}"`;
+                        }
+
+                        // Kolom map_link
+                        if (key === 'map_link') {
+                            const lat = row.latitude;
+                            const lon = row.longitude;
+                            if (lat && lon) {
+                                value = `<a href="https://www.google.com/maps?q=${lat},${lon}" target="_blank"><i class="mdi mdi-google-maps me-sm-1"></i></a>`;
+                            } else {
+                                value = '-';
+                            }
+                            tdStyle = 'style="text-align:center;"';
+                        }
+
+                        return `<td ${tdStyle}>${value}</td>`;
+                    }).join('') +
+                    '</tr>';
+
+                }).join('')
+            );
+
+            $('#previewTableContainer').removeClass('d-none');
+
+            // Inisialisasi atau reinit DataTable
+            $('#previewTable').DataTable({
+                //destroy: true, // penting agar bisa dipanggil ulang
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel',
+                {
+                    extend: 'pdf',
+                    text: 'PDF',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    title: 'Laporan Posisi Akhir',
+                    customize: function (doc) {
+                    doc.defaultStyle.fontSize = 8;
+                    doc.styles.tableHeader.fontSize = 9;
+                    doc.styles.tableHeader.alignment = 'left';
+                    }
+                },
+                'print'
+                ],
+                responsive: false,
+                scrollX: true,
+                pageLength: 25,
+                ordering: false,
+                language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ entri",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                paginate: { previous: "Sebelumnya", next: "Berikutnya" }
+                }
+            });
+
+            } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops!',
+                text: 'Data tidak ditemukan.',
+                confirmButtonColor: '#3085d6',
+            });
+
+            }
+        },
+        error: function() {
+            $('#loading').hide();
+            alert('Terjadi kesalahan saat memuat data.');
         }
-    
-        function closeAlert() {
-            var dateAlert = document.getElementById("dateAlert");
-            dateAlert.classList.add("d-none"); // Sembunyikan notifikasi
-        }
-    </script>
- @endpush
+        });
+    }
+  }
+
+
+</script>
+
+@endpush
+
+
+
+
+
+
+
+
+
