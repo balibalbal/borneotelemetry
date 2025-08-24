@@ -548,35 +548,14 @@ class ReportController extends Controller
         ]);
     }
 
-    public function tampilkanListPosisiAkhir(Request $request)
+    public function tampilkanListPosisiAkhir(Request $request) 
     {
-        $group = $request->group_id;      
+        $filters = $request->all();
+        $data = \App\Exports\ReportPosisiAkhir::getData($filters); // Ambil data sesuai filter
 
-        $traccars = Traccar::leftjoin('vehicles', 'traccars.vehicle_id', '=', 'vehicles.id')
-                    ->leftjoin('devices', 'traccars.device_id', '=', 'devices.id')
-                    ->where('traccars.active', 1)
-                    ->select('traccars.*','devices.sim_number');
-
-        // Jika group_id bukan 1, gunakan whereIn()
-        if (!in_array(1, (array) $group)) {
-            $traccars->whereIn('vehicles.group_id', (array) $group);
-        }
-
-        $traccars = $traccars->get();
-
-        // Ambil waktu sekarang
-        $now = Carbon::now();
-
-        // Iterasi setiap data untuk menambahkan selisih waktu
-        $traccars->transform(function ($item) use ($now) {
-            $time = Carbon::parse($item->time); // Konversi ke Carbon
-            $item->time_diff = $time->locale('id')->diffForHumans(); // Format "1 jam yang lalu"
-            $item->diff_hours = $time->diffInHours($now);
-            return $item;
-        });
-    
         return response()->json([
-            'data' => $traccars
+            'success' => true,
+            'data' => $data ?? [], // kalau null, kasih array kosong
         ]);
     }
 

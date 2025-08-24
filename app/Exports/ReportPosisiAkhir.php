@@ -27,7 +27,7 @@ class ReportPosisiAkhir implements FromCollection, WithHeadings, WithEvents
     public static function getData($filters)
     {
         $groupIds = $filters['group_id'] ?? [];
-dd($groupIds); exit;
+//dd($groupIds); exit;
         $whereClause = '';
         $bindings = [];
 
@@ -52,7 +52,7 @@ dd($groupIds); exit;
             LEFT JOIN vehicles ON traccars.vehicle_id = vehicles.id              
             $whereClause
         ";
-dd($query); exit;
+//dd($query); exit;
         $data = DB::select($query, $bindings);
 
         // Tambahkan kolom NO (auto number)
