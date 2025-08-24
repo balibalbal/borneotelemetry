@@ -52,7 +52,7 @@ class ReportPosisiAkhir implements FromCollection, WithHeadings, WithEvents
             LEFT JOIN vehicles ON traccars.vehicle_id = vehicles.id              
             $whereClause
         ";
-
+dd($query); exit;
         $data = DB::select($query, $bindings);
 
         // Tambahkan kolom NO (auto number)
