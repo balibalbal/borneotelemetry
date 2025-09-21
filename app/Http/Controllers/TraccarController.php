@@ -169,8 +169,8 @@ class TraccarController extends Controller
                 'axisx' => $item->axisx,
                 'axisy' => $item->axisy,
                 'axisz' => $item->axisz,
-                'roll' => $item->roll,
-                'pitch' => $item->pitch
+                'roll' => round($item->roll, 2),
+                'pitch' => round($item->pitch, 2)
             ];
         }
 
