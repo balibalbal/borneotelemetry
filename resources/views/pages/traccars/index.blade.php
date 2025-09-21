@@ -494,6 +494,26 @@
                 }
         }
 
+        function getAccelerationRoll(roll) {
+            if (roll > 0) {
+                    return '<span class="badge rounded-pill bg-primary">Miring Ke Kanan '. roll .'&deg;</span>';
+                } else if (roll < 0) {
+                    return '<span class="badge rounded-pill bg-warning">Miring Ke Kiri '. roll .'&deg;</span>';
+                } else {
+                    return '<span class="badge rounded-pill bg-primary">Kemiringan '. roll .'&deg;</span>';
+                }
+        }
+
+        function getAccelerationPitch(pitch) {
+            if (pitch > 0) {
+                    return '<span class="badge rounded-pill bg-primary">Miring Ke Belakang '. pitch .'&deg;</span>';
+                } else if (roll < 0) {
+                    return '<span class="badge rounded-pill bg-warning">Miring Ke Depan '. pitch .'&deg;</span>';
+                } else {
+                    return '<span class="badge rounded-pill bg-primary">Kemiringan '. pitch .'&deg;</span>';
+                }
+        }
+
         function getStatusText(status) {
                     switch (status) {
                         case 'bergerak':
@@ -555,6 +575,9 @@
                         <li>Arah: ${direction}</li>
                         <li>Angle: ${data.course}&deg;</li>
                         <li>Altitude: ${data.altitude} m</li>
+                        <li>X: ${data.axisx}&deg;, Y: ${data.axisy}&deg;, Z: ${data.axisz}&deg;</li>
+                        <li>Roll: ${getAccelerationRoll(data.roll)}</li>
+                        <li>Pitch: ${getAccelerationPitch(data.pitch)}</li>
                         <li>Ignition: ${getIgnitionText(data.ignition)}</li>
                         <li>LatLong: ${data.latitude}, ${data.longitude}</li>
                         <li>Alamat: ${data.address}</li>

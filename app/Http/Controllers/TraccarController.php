@@ -160,7 +160,12 @@ class TraccarController extends Controller
                 'ignition' => $item->ignition_status,
                 'distance' => $item->total_distance,
                 'address' => $item->address,
-                'geo_point' => $item->geo_point
+                'geo_point' => $item->geo_point,
+                'axisx' => $item->axisx,
+                'axisy' => $item->axisy,
+                'axisz' => $item->axisz,
+                'roll' => $item->roll,
+                'pitch' => $item->pitch
             ];
         }
 
