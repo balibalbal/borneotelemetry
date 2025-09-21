@@ -496,21 +496,21 @@
 
         function getAccelerationRoll(roll) {
             if (roll > 0) {
-                return `<span class="badge rounded-pill bg-primary">Miring Ke Kanan ${roll}&deg;</span>`;
+                return `<span>Miring Ke Kanan ${roll}&deg;</span>`;
             } else if (roll < 0) {
-                return `<span class="badge rounded-pill bg-warning">Miring Ke Kiri ${roll}&deg;</span>`;
+                return `<span>Miring Ke Kiri ${roll}&deg;</span>`;
             } else {
-                return `<span class="badge rounded-pill bg-primary">Kemiringan ${roll}&deg;</span>`;
+                return `<span>Kemiringan ${roll}&deg;</span>`;
             }
         }
 
         function getAccelerationPitch(pitch) {
             if (pitch > 0) {
-                return `<span class="badge rounded-pill bg-primary">Miring Ke Belakang ${pitch}&deg;</span>`;
-            } else if (pitch < 0) { // ✅ diperbaiki
-                return `<span class="badge rounded-pill bg-warning">Miring Ke Depan ${pitch}&deg;</span>`;
+                return `<span>Miring Ke Belakang ${pitch}&deg;</span>`;
+            } else if (pitch < 0) { 
+                return `<span>Miring Ke Depan ${pitch}&deg;</span>`;
             } else {
-                return `<span class="badge rounded-pill bg-primary">Kemiringan ${pitch}&deg;</span>`;
+                return `<span>Kemiringan ${pitch}&deg;</span>`;
             }
         }
 
