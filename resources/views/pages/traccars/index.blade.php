@@ -576,7 +576,7 @@
                         <li>Arah: ${direction}</li>
                         <li>Angle: ${data.course}&deg;</li>
                         <li>Altitude: ${data.altitude} m</li>
-                        <li>X: ${data.axisx}&deg;, Y: ${data.axisy}&deg;, Z: ${data.axisz}&deg;</li>
+                        <li>X: ${data.axisx} mG, Y: ${data.axisy} mG, Z: ${data.axisz} mG</li>
                         <li>Roll: ${getAccelerationRoll(data.roll)}</li>
                         <li>Pitch: ${getAccelerationPitch(data.pitch)}</li>
                         <li>Ignition: ${getIgnitionText(data.ignition)}</li>
