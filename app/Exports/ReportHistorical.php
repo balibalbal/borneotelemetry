@@ -57,15 +57,21 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
         
         $data = DB::select($query, $parameters);
 
-        // Tambahkan kolom NO (auto number) dan format roll
+        // Tambahkan kolom NO (auto number) dan format roll & pitch
         $numbered = collect($data)->map(function ($item, $index) {
             $roll = $item->roll;
+            $pitch = $item->pitch;
+            
             $formattedRoll = self::formatRoll($roll);
+            $formattedPitch = self::formatPitch($pitch);
 
             return (object) array_merge(
                 ['no' => $index + 1], // NO mulai dari 1
                 (array) $item,
-                ['roll' => $formattedRoll] // Override kolom roll dengan format yang baru
+                [
+                    'roll' => $formattedRoll, // Override kolom roll dengan format yang baru
+                    'pitch' => $formattedPitch // Override kolom pitch dengan format yang baru
+                ]
             );
         });
 
@@ -75,12 +81,30 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
     // Method static untuk format roll
     private static function formatRoll($roll)
     {
-        if ($roll > 0) {
-            return "Miring Ke Kanan {$roll}°";
-        } else if ($roll < 0) {
-            return "Miring Ke Kiri {$roll}°";
+        // Bulatkan nilai roll tanpa koma
+        $roundedRoll = round($roll);
+        
+        if ($roundedRoll > 0) {
+            return "Miring Ke Kanan {$roundedRoll}°";
+        } else if ($roundedRoll < 0) {
+            return "Miring Ke Kiri {$roundedRoll}°";
         } else {
-            return "Kemiringan {$roll}°";
+            return "Kemiringan {$roundedRoll}°";
+        }
+    }
+
+    // Method static untuk format pitch
+    private static function formatPitch($pitch)
+    {
+        // Bulatkan nilai pitch tanpa koma
+        $roundedPitch = round($pitch);
+        
+        if ($roundedPitch > 0) {
+            return "Miring Ke Belakang {$roundedPitch}°";
+        } else if ($roundedPitch < 0) {
+            return "Miring Ke Depan {$roundedPitch}°";
+        } else {
+            return "Kemiringan {$roundedPitch}°";
         }
     }
 
