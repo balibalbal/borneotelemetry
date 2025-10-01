@@ -23,8 +23,8 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
         return $this->getData($this->filters);
     }
 
-    // Method NON-static untuk ambil data
-    public function getData($filters)
+    // Method reusable untuk ambil data dari controller
+    public static function getData($filters)
     {
         $startDate = $filters['start_date'];
         $endDate = $filters['end_date'];
@@ -60,7 +60,7 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
         // Tambahkan kolom NO (auto number) dan format roll
         $numbered = collect($data)->map(function ($item, $index) {
             $roll = $item->roll;
-            $formattedRoll = $this->formatRoll($roll);
+            $formattedRoll = self::formatRoll($roll);
 
             return (object) array_merge(
                 ['no' => $index + 1], // NO mulai dari 1
@@ -72,8 +72,8 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
         return $numbered;
     }
 
-    // Method untuk format roll
-    private function formatRoll($roll)
+    // Method static untuk format roll
+    private static function formatRoll($roll)
     {
         if ($roll > 0) {
             return "Miring Ke Kanan {$roll}°";
