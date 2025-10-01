@@ -40,6 +40,11 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
                 histories.longitude,
                 histories.ignition_status,
                 histories.address,
+                histories.axisx,
+                histories.axisy,
+                histories.axisz,
+                histories.roll,
+                histories.pitch,
                 histories.status
             FROM 
                 histories         
@@ -67,8 +72,8 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
     public function headings(): array
     {
         return [
-            'NO', 'TANGGAL', 'NOPOL',
-            'SPEED', 'ANGLE/ARAH', 'LATITUDE','LONGITUDE', 'IGNITION', 'ALAMAT', 'STATUS'
+            'NO', 'TANGGAL', 'NOPOL', 'SPEED', 'ANGLE/ARAH', 'LATITUDE','LONGITUDE',
+            'IGNITION', 'ALAMAT', 'X VALUE', 'Y VALUE', 'Z VALUE', 'ROLL', 'PITCH', 'STATUS'
         ];
     }
 
