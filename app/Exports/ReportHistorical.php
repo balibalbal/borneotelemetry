@@ -23,8 +23,8 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
         return $this->getData($this->filters);
     }
 
-    // Method reusable untuk ambil data dari controller
-    public static function getData($filters)
+    // Method NON-static untuk ambil data
+    public function getData($filters)
     {
         $startDate = $filters['start_date'];
         $endDate = $filters['end_date'];
@@ -110,7 +110,6 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
                         'bold' => true
                     ]
                 ]);                
-                
             }
         ];
     }
