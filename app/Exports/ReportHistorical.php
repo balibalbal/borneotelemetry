@@ -57,16 +57,31 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
         
         $data = DB::select($query, $parameters);
 
-
-        // Tambahkan kolom NO (auto number)
+        // Tambahkan kolom NO (auto number) dan format roll
         $numbered = collect($data)->map(function ($item, $index) {
+            $roll = $item->roll;
+            $formattedRoll = $this->formatRoll($roll);
+
             return (object) array_merge(
                 ['no' => $index + 1], // NO mulai dari 1
-                (array) $item
+                (array) $item,
+                ['roll' => $formattedRoll] // Override kolom roll dengan format yang baru
             );
         });
 
         return $numbered;
+    }
+
+    // Method untuk format roll
+    private function formatRoll($roll)
+    {
+        if ($roll > 0) {
+            return "Miring Ke Kanan {$roll}°";
+        } else if ($roll < 0) {
+            return "Miring Ke Kiri {$roll}°";
+        } else {
+            return "Kemiringan {$roll}°";
+        }
     }
 
     public function headings(): array
@@ -84,7 +99,7 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
                 $sheet = $event->sheet->getDelegate();
 
                 // Apply blue background to the header row
-                $sheet->getStyle('A1:K1')->applyFromArray([
+                $sheet->getStyle('A1:O1')->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'startColor' => [
@@ -100,4 +115,3 @@ class ReportHistorical implements FromCollection, WithHeadings, WithEvents
         ];
     }
 }
-

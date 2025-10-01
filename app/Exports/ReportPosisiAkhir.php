@@ -89,7 +89,7 @@ class ReportPosisiAkhir implements FromCollection, WithHeadings, WithEvents
                 $sheet = $event->sheet->getDelegate();
 
                 // Apply blue background to the header row
-                $sheet->getStyle('A1:K1')->applyFromArray([
+                $sheet->getStyle('A1:N1')->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'startColor' => [
