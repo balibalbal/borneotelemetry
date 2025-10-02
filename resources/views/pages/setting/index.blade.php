@@ -120,7 +120,7 @@
                         >
                         <span class="slider"></span>
                         </label>
-                        <span>Notifikasi Kemiringan 3&deg;</span>
+                        <span>Notifikasi Kemiringan > 3&deg;</span>
 
                         <!-- Menu kemiringan (Muncul jika aktif) -->
                         @if(auth()->user()->settings['roll'] ?? false)

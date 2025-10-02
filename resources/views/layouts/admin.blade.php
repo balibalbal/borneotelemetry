@@ -83,7 +83,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
       // const customerId = window.customerId; // Ambil customer_id dari variabel global
-      const socket = io('wss://socket.mtrack.co.id'); // Koneksi WebSocket
+      const socket = io('wss://socket.speedtrack.id'); // Koneksi WebSocket
 
       // Ketika menerima data dari WebSocket
       socket.on('message', (data) => {
@@ -151,15 +151,16 @@
             }
           @endif
 
-          // Ini untuk notifikasi over_speed
-          @if(auth()->user()->settings['over_speed'] ?? false)
+          // Ini untuk notifikasi roll
+          @if(auth()->user()->settings['roll'] ?? false)
             // Ambil informasi dari data
             if (data.notifikasi == 'location' && data.roll > 3) {
-              const roll = data.roll;
+              // const roll = data.roll;
+              const roll = Math.round(data.roll);
               const no_pol = data.no_pol;
               const fixTime = data.fixTime;
               
-              // Cek jika pengguna sudah berinteraksi, baru putar audio
+              // Cek jika pengguna sudah aktifkan suara, baru putar audio
               @if(auth()->user()->settings['suara'] ?? false)
                 if (isUserInteracted) {
                   const audio = new Audio('/backend/assets/audio/alarm.mp3');
