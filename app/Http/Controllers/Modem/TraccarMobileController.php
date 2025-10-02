@@ -69,7 +69,6 @@ class TraccarMobileController extends Controller
                 'distance' => $data['distance'],
                 'total_distance' => $data['total_distance'],
                 'ignition_status' => 'On',
-                'vendor_gps' => 'mobile apk',
                 'address' => $data['address']
             ]);
         //}
