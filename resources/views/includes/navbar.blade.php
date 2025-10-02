@@ -134,9 +134,11 @@
                             <img src="{{ url('backend/assets/img/avatars/1.png') }}" class="user-avatar" alt="User Avatar">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <li><span class="fw-semibold">{{ auth()->user()->name }}</span></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('users.show', auth()->user()->id) }}"><span class="mdi mdi-account me-2"></span> Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><span class="mdi mdi-cog me-2"></span> Settings</a></li>
-                            <li><a class="dropdown-item" href="#"><span class="mdi mdi-bell me-2"></span> Notifications</a></li>
+                            {{-- <li><a class="dropdown-item" href="{{ route('settings.index') }}"><span class="mdi mdi-cog me-2"></span> Settings</a></li> --}}
+                            <li><a class="dropdown-item" href="{{ route('settings.index') }}"><span class="mdi mdi-bell me-2"></span> Notifications</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                               <form action="/logout" method="POST">

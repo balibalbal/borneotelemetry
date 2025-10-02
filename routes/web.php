@@ -28,9 +28,8 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GrafikController;
 use App\Http\Controllers\SystemController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\HsoMonitoringController;
-use App\Http\Controllers\HsoHistoryController;
-use App\Http\Controllers\HsoParkingController;
 use App\Http\Controllers\Modem\InformationController;
 use App\Http\Controllers\Modem\TraccarModemController;
 use App\Http\Controllers\Modem\TransmissionModemController;
@@ -75,20 +74,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('devices', DeviceController::class);
     Route::resource('traccars', TraccarController::class);
     Route::resource('geofence', GeofenceController::class);
+    Route::resource('settings', SettingController::class);
     Route::resource('users', UserController::class);
     Route::resource('notification', NotificationController::class);
     Route::resource('histories', HistoryController::class);
     Route::resource('events', EventController::class);
     Route::resource('transmissions', TransmissionController::class);
     Route::resource('alarms', AlarmController::class);
-    Route::resource('hso', HsoMonitoringController::class);    
-    Route::resource('histories_geofence', GeofenceSessionController::class);    
-    Route::resource('hso_parking', HsoParkingController::class);    
-    Route::get('/hso-last-position', [HsoParkingController::class, 'showLogSizeTracking'])->name('hso.last-position');
-    Route::post('/log/delete', [HsoParkingController::class, 'deleteLogHso'])->name('log.delete');
-    Route::post('/log/delete-sistem', [HsoParkingController::class, 'deleteLogSistem'])->name('log.deleteSistem');
-    Route::post('/log/delete-gpslogin', [HsoParkingController::class, 'deleteLogGpsLogin'])->name('log.deleteGpsLogin');
-    Route::get('/hso-history', [HsoHistoryController::class, 'index'])->middleware('auth');
+    Route::post('/settings/save', [SettingController::class, 'save']);
     Route::get('/vehicle/export', [VehicleController::class, 'exportVehicle'])->name('vehicles.export');
     Route::get('/group-vehicle/{customerId}', [VehicleController::class, 'getGroupsByCustomer']); 
     Route::get('/vehiclebygroup/{groupId}', [ReportController::class, 'getVehicleByGroup']); 
@@ -168,15 +161,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/list-data-information', [EventController::class, 'listDataInformation']);
     Route::get('/list-data-transmission', [TransmissionController::class, 'listDataTransmission']);
     Route::get('/get-data-map', [HistoryController::class, 'getMapData']);
-    Route::get('/get-data-map-hso', [HsoHistoryController::class, 'getMapDataHSO']);
 
     // route untuk cek sistem php daemon jalan atau tidak di server tujuan
     Route::get('/show-comserver-processes', [SystemController::class, 'showSistemProcesses']);
     Route::post('/check-sistem-processes', [SystemController::class, 'checkSistemProcesses']);
     Route::post('/run-remote-sistem', [SystemController::class, 'runRemoteSistem']);
-
-    Route::post('/chat', [ChatController::class, 'chat']);
-    Route::get('/helo', [ChatController::class, 'index']);
 });
 
 
