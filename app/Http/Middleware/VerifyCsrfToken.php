@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
         'modem/alarm',
         'modem/information',
         'modem/traccar',
+        'mobile/traccar',
         'modem/transmission',
         'modem/check-imei', 
     ];
