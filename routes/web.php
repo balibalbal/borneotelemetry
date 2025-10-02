@@ -32,6 +32,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\HsoMonitoringController;
 use App\Http\Controllers\Modem\InformationController;
 use App\Http\Controllers\Modem\TraccarModemController;
+use App\Http\Controllers\Modem\TraccarMobileController;
 use App\Http\Controllers\Modem\TransmissionModemController;
 use App\Http\Controllers\Modem\AlarmController as ModemAlarmController;
 use App\Http\Controllers\Modem\DeviceController as ModemDeviceController;
@@ -52,6 +53,7 @@ Route::get('/', [DashboardController::class, 'index'])->middleware('auth');
 // route untuk modem
 Route::post('/modem/information', [InformationController::class, 'store']);
 Route::post('/modem/traccar', [TraccarModemController::class, 'store']);
+Route::post('/mobile/traccar', [TraccarMobileController::class, 'store']);
 Route::post('/modem/alarm', [ModemAlarmController::class, 'store']);
 Route::post('/modem/transmission', [TransmissionModemController::class, 'store']);
 Route::get('/modem/check-imei/{imei}', [ModemDeviceController::class, 'checkImei']);
