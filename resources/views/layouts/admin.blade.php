@@ -189,7 +189,7 @@
                 </div>
 
                   <div class="toast-body">
-                      Tanggal : ${fixTime}<br>
+                      Tanggal : ${time}<br>
                       Kecepatan : ${roll} Km/h
                   </div>
                 </div>
