@@ -111,25 +111,25 @@
             <div class="card card-border-shadow-warning h-100">
                 <div class="card">
                     <div class="card-body">
-                        <!-- Toggle Switch over_speed -->
+                        <!-- Toggle Switch roll -->
                         <label class="switch">
                         <input 
                             type="checkbox" 
-                            onchange="saveSetting('over_speed', this.checked)" 
-                            {{ auth()->user()->settings['over_speed'] ?? false ? 'checked' : '' }}
+                            onchange="saveSetting('roll', this.checked)" 
+                            {{ auth()->user()->settings['roll'] ?? false ? 'checked' : '' }}
                         >
                         <span class="slider"></span>
                         </label>
-                        <span>Notifikasi Over Speed > 60 Km/h</span>
+                        <span>Notifikasi Kemiringan 3&deg;</span>
 
-                        <!-- Menu Dump (Muncul jika aktif) -->
-                        @if(auth()->user()->settings['over_speed'] ?? false)
+                        <!-- Menu kemiringan (Muncul jika aktif) -->
+                        @if(auth()->user()->settings['roll'] ?? false)
                         <div class="mt-2">
-                            <small class="text-primary">Notifikasi Over Speed Aktif</small>
+                            <small class="text-primary">Notifikasi Kemiringan Aktif</small>
                         </div>
                         @else
                         <div class="mt-2">
-                            <small class="text-danger">Notifikasi Over Speed Tidak Aktif</small>
+                            <small class="text-danger">Notifikasi Kemiringan Tidak Aktif</small>
                         </div>
                         @endif
                     </div>
