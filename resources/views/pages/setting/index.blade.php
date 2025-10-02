@@ -151,7 +151,7 @@
       },
       body: JSON.stringify({ [key]: value })
     }).then(() => {
-      //location.reload(); // Refresh untuk update UI
+      location.reload(); // Refresh untuk update UI
     });
   }
 </script>
