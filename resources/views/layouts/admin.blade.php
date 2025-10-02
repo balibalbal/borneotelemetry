@@ -154,7 +154,7 @@
           // Ini untuk notifikasi roll
           @if(auth()->user()->settings['roll'] ?? false)
             // Ambil informasi dari data
-            if (data.notifikasi == 'location' && data.roll > 3) {
+            if (data.notifikasi == 'location' && data.roll < 3) {
               // const roll = data.roll;
               const roll = Math.round(data.roll);
               const no_pol = data.no_pol;
