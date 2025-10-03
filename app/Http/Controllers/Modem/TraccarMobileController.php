@@ -71,7 +71,7 @@ class TraccarMobileController extends Controller
                 'status' => $data['status'],
                 'distance' => $data['distance'],
                 'total_distance' => $data['total_distance'],
-                'ignition_status' => 'On',
+                'ignition_status' => $data['ignition_status'],
                 'address' => $data['address'],
                 'geom' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)"),
                 'geo_point' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)")
