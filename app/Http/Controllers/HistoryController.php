@@ -20,14 +20,14 @@ class HistoryController extends Controller
     {
         $customer_id = auth()->user()->customer_id;
                 
-        if ($customer_id == 1) {
+        //if ($customer_id == 1) {
             $vehicles = Vehicle::where('status', 1)
                     ->get();
-        } else {
-            $vehicles = Vehicle::where('customer_id', $customer_id)
-                    ->where('status', 1)
-                    ->get();
-        }
+       // } else {
+         //   $vehicles = Vehicle::where('customer_id', $customer_id)
+         //           ->where('status', 1)
+         //           ->get();
+        //}
         
         return view('pages.histories.index')->with([
             'vehicles' => $vehicles
@@ -167,7 +167,7 @@ class HistoryController extends Controller
     // }
 
     public function getMapData(HistoryRequest $request) {
-        $customer_id = auth()->user()->customer_id;
+        //$customer_id = auth()->user()->customer_id;
 
         $data = $request->all();
     
@@ -201,19 +201,19 @@ class HistoryController extends Controller
                 ->orderBy('histories.time', 'asc') // Mengurutkan berdasarkan time (ASC)
                 ->get();
     
-        $geoItems = Geofence::where('customer_id', $customer_id)->get();
+        // $geoItems = Geofence::where('customer_id', $customer_id)->get();
         $geofenceMapData = [];
     
         // Format the retrieved geofence data
-        foreach ($geoItems as $geo) {
-            $geofenceMapData[] = [
-                'id' => $geo->id,
-                'latlong' => $geo->latlong,
-                'name' => $geo->name,
-                'type' => $geo->type,
-                'radius' => $geo->radius
-            ];
-        }
+        // foreach ($geoItems as $geo) {
+        //     $geofenceMapData[] = [
+        //         'id' => $geo->id,
+        //         'latlong' => $geo->latlong,
+        //         'name' => $geo->name,
+        //         'type' => $geo->type,
+        //         'radius' => $geo->radius
+        //     ];
+        // }
     
         // $customerItems = Customer::all();
         // $customerMapData = [];
@@ -232,7 +232,7 @@ class HistoryController extends Controller
         // Mengemas semua data ke dalam satu array asosiatif
         $data = [
             'data' => $histories,
-            'geofenceMapData' => $geofenceMapData,
+            //'geofenceMapData' => $geofenceMapData,
             //'customerMapData' => $customerMapData
         ];
                 

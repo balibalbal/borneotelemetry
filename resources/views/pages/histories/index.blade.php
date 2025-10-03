@@ -91,7 +91,7 @@
     </div>
 
     <div id="loading" style="display: none; width: 6rem;">
-        <img class="card-img-top" src="/backend/assets/img/icons/mtrack-logo-animasi.gif" alt="Card image cap">
+        <img class="card-img-top" src="/backend/assets/img/icons/loading.gif" alt="loading...">
     </div>
 
     {{-- peta --}}
