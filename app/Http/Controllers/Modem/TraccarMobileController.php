@@ -43,8 +43,12 @@ class TraccarMobileController extends Controller
         // Simpan atau perbarui data ke database
         $traccar = Traccar::updateOrCreate(
             $criteria,
-            $data
+            array_merge($data, [
+                'geom' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)"),
+                'geo_point' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)")
+            ])
         );
+
 
         // if ($traccar) {
         //                 Vehicle::where('id', $criteria)->update([
@@ -58,7 +62,6 @@ class TraccarMobileController extends Controller
             DB::table('histories')->insert([
                 'vehicle_id' => $data['vehicle_id'],
                 'no_pol' => $data['no_pol'],
-                // 'customer_id' => $data['customer_id'],
                 'device_id' => $data['device_id'],
                 'latitude' => $data['latitude'],
                 'longitude' => $data['longitude'],
@@ -69,7 +72,9 @@ class TraccarMobileController extends Controller
                 'distance' => $data['distance'],
                 'total_distance' => $data['total_distance'],
                 'ignition_status' => 'On',
-                'address' => $data['address']
+                'address' => $data['address'],
+                'geom' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)"),
+                'geo_point' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)")
             ]);
         //}
 
