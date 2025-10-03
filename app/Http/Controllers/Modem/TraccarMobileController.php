@@ -66,7 +66,7 @@ class TraccarMobileController extends Controller
                 'latitude' => $data['latitude'],
                 'longitude' => $data['longitude'],
                 'speed' => $data['speed'],
-                'time' => $data['timestamp'],
+                'time' => $data['time'],
                 'course' => $data['heading'],
                 'status' => $data['status'],
                 'distance' => $data['distance'],
