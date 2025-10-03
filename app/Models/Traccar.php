@@ -29,7 +29,7 @@ class Traccar extends Model
         'enter_time', 
         'out_time', 
         'address', 
-        'geom',
+        //'geom',
         'geo_point',
         'status',
         'vendor_gps'

@@ -44,7 +44,7 @@ class TraccarMobileController extends Controller
         $traccar = Traccar::updateOrCreate(
             $criteria,
             array_merge($data, [
-                'geom' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)"),
+                // 'geom' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)"),
                 'geo_point' => DB::raw("ST_SetSRID(ST_MakePoint({$data['longitude']}, {$data['latitude']}), 4326)")
             ])
         );
