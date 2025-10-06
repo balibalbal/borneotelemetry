@@ -43,14 +43,9 @@ class ApiLoginController extends Controller
         $tokenUser = User::where('email', $request->email)->first();
 
         $dataUser = DB::table('users')
-            ->join('customers', 'users.customer_id', '=', 'customers.id')
             ->where('users.email', $request->email)
             ->select(
-                'users.*', 
-                'customers.name as customer_name', 
-                'customers.address as customer_address', 
-                'customers.phone as customer_phone', 
-                'customers.email as customer_email'
+                'users.*'
             )
             ->first();
 

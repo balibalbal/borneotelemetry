@@ -12,6 +12,7 @@ use App\Http\Controllers\API\ApiTrackingController;
 use App\Http\Controllers\API\ApiReportController;
 use App\Http\Controllers\API\ApiVehicleController;
 use App\Http\Controllers\API\ApiInformationController;
+use App\Http\Controllers\API\ApiUploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,5 @@ Route::get('vehicle', [ApiVehicleController::class,'index'])->middleware('auth:s
 Route::get('driver', [ApiDriverController::class,'index'])->middleware('auth:sanctum');
 Route::get('driver/{id}', [ApiDriverController::class,'show'])->middleware('auth:sanctum');
 Route::get('vehicle/{id}', [ApiVehicleController::class,'show'])->middleware('auth:sanctum');
+
+Route::post('/upload', [ApiUploadController::class, 'upload'])->middleware('auth:sanctum');
