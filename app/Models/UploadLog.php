@@ -15,6 +15,6 @@ class UploadLog extends Model
         'latitude',
         'longitude',
         'address',
-        'publicUrl',
+        'file_url',
     ];
 }
