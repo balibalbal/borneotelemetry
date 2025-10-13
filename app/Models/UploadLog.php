@@ -5,11 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class HsoGeofenceEnter extends Model
+class UploadLog extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'idpoi', 'transporter', 'name', 'TrackingDate', 'FenceCode', 'Acc', 'EnterDateTimeArea', 'OutDateTimeArea', 'info'
+        'user_id',
+        'order_number',
+        'latitude',
+        'longitude',
+        'address',
+        'file_path',
     ];
 }
