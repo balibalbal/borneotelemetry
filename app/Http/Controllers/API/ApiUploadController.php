@@ -41,7 +41,7 @@ class ApiUploadController extends Controller
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
                 'address' => $request->address,
-                'file_url' => $filename,
+                'file_url' => $publicUrl,
             ]);
 
             return response()->json([
