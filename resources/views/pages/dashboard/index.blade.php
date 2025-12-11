@@ -12,12 +12,12 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-primary"
-                            ><i class="mdi mdi-bus-school mdi-20px"></i
+                            ><i class="mdi mdi-excavator mdi-20px"></i
                           ></span>
                         </div>
                         <h4 class="ms-1 mb-0 display-6">{{ $totalVehicles }}</h4>
                       </div>
-                      <p class="mb-0 text-heading">Total Kendaraan</p>
+                      <p class="mb-0 text-heading">Total Excavator</p>
                       {{-- <p class="mb-0">
                         <span class="me-1">+18.2%</span>
                         <small class="text-muted">than last week</small>
@@ -31,7 +31,7 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-success"
-                            ><i class="mdi mdi-truck-check mdi-20px"></i
+                            ><i class="mdi mdi-excavator mdi-20px"></i
                           ></span>
                         </div>
                         <h4 class="ms-1 mb-0 display-6">{{ $onlineCount }}</h4>
@@ -50,7 +50,7 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-warning">
-                            <i class="mdi mdi-truck mdi-20px"></i
+                            <i class="mdi mdi-excavator mdi-20px"></i
                           ></span>
                         </div>
                         <h4 class="ms-1 mb-0 display-6">{{ $berhentiCount }}</h4>
@@ -69,7 +69,7 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-dark">
-                            <i class="mdi mdi-truck-alert mdi-20px"></i>
+                            <i class="mdi mdi-excavator mdi-20px"></i>
                           </span>
                         </div>
                         <h4 class="ms-1 mb-0 display-6">{{ $diamCount }}</h4>
