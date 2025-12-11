@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Broadcast;
 //     return (int) $user->id === (int) $id;
 // });
 
-Broadcast::channel('alarm-channel.{customer_id}', function ($user, $customer_id) {
-    // Hanya izinkan pengguna dengan customer_id yang sama
-    return (int) $user->customer_id === (int) $customer_id;
-});
+// Broadcast::channel('alarm-channel.{customer_id}', function ($user, $customer_id) {
+//     // Hanya izinkan pengguna dengan customer_id yang sama
+//     return (int) $user->customer_id === (int) $customer_id;
+// });
