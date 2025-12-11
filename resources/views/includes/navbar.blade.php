@@ -95,6 +95,9 @@
                           @if (auth()->user()->hasPermissionTo('grafik-jarak'))
                             <li><a class="dropdown-item" href="/grafik/distance"><span class="mdi mdi-chart-timeline"></span> Jarak Tempuh</a></li>
                           @endif
+                          @if (auth()->user()->hasPermissionTo('grafik-jarak'))
+                            <li><a class="dropdown-item" href="/grafik/sudut"><span class="mdi mdi-format-rotate-90"></span> Kemiringan</a></li>
+                          @endif
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

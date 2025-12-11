@@ -316,6 +316,25 @@ class GrafikController extends Controller
             'vehicles' => $vehicles
         ]);
     }
+    public function grafikKemiringanForm()
+    {
+        // $customer_id = auth()->user()->customer_id;
+
+        $vehicles = Vehicle::where('status', 1);
+
+        // Menambahkan filter berdasarkan customer_id jika diperlukan
+        // if ($customer_id != 1) {
+        //     $vehicles = $vehicles->where('customer_id', $customer_id);
+        // }
+
+        $vehicles = $vehicles->get();
+        
+        
+        // Kirim data yang sudah diproses ke view
+        return view('pages.grafik.kemiringan', [
+            'vehicles' => $vehicles
+        ]);
+    }
 
     public function totalDistancePerDay(Request $request)
     {
@@ -370,6 +389,93 @@ class GrafikController extends Controller
         return response()->json([
             'distances' => $distances
         ]);
+    }
+
+    public function grafikKemiringan(Request $request)
+    {
+        $vehicleId = $request->input('vehicle_id');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        if ($startDate && !Carbon::hasFormat($startDate, 'Y-m-d')) {
+            return response()->json(['error' => 'Invalid start date format. Expected format is Y-m-d.'], 400);
+        }
+
+        if ($endDate && !Carbon::hasFormat($endDate, 'Y-m-d')) {
+            return response()->json(['error' => 'Invalid end date format. Expected format is Y-m-d.'], 400);
+        }
+
+        // Query builder histories
+        $query = DB::table('histories')->select([
+            'time',
+            'no_pol',
+            'speed',
+            'course',
+            'latitude',
+            'longitude',
+            'ignition_status',
+            'address',
+            'axisx',
+            'axisy',
+            'axisz',
+            'roll',
+            'pitch',
+            'status'
+        ]);
+
+        if ($vehicleId) {
+            $query->where('vehicle_id', $vehicleId);
+        }
+
+        if ($startDate) {
+            $query->whereDate('time', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->whereDate('time', '<=', $endDate);
+        }
+
+        $kemiringan = $query->orderBy('time')->get();
+
+        // Tambahkan format roll & pitch
+        $kemiringan->transform(function ($item) {
+            $item->roll_formatted = self::formatRoll($item->roll);
+            $item->pitch_formatted = self::formatPitch($item->pitch);
+            return $item;
+        });
+
+        return response()->json([
+            'distances' => $kemiringan
+        ]);
+    }
+
+    private static function formatRoll($roll)
+    {
+        // Bulatkan nilai roll tanpa koma
+        $roundedRoll = round($roll);
+        
+        if ($roundedRoll > 0) {
+            return "Miring Ke Kanan {$roundedRoll}°";
+        } else if ($roundedRoll < 0) {
+            return "Miring Ke Kiri {$roundedRoll}°";
+        } else {
+            return "Kemiringan {$roundedRoll}°";
+        }
+    }
+
+    // Method static untuk format pitch
+    private static function formatPitch($pitch)
+    {
+        // Bulatkan nilai pitch tanpa koma
+        $roundedPitch = round($pitch);
+        
+        if ($roundedPitch > 0) {
+            return "Miring Ke Belakang {$roundedPitch}°";
+        } else if ($roundedPitch < 0) {
+            return "Miring Ke Depan {$roundedPitch}°";
+        } else {
+            return "Kemiringan {$roundedPitch}°";
+        }
     }
 
     public function getSpeedMapForm()

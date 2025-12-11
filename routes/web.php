@@ -139,6 +139,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/grafik/distribusi', [GrafikController::class, 'speedDistributionForm']);
     Route::get('/grafik/distribusi-kecepatan', [GrafikController::class, 'speedDistribution']);
     Route::get('/grafik/distance-by-day', [GrafikController::class, 'totalDistancePerDay']);
+    Route::get('/grafik/kemiringan', [GrafikController::class, 'grafikKemiringan']);
+    Route::get('/grafik/sudut', [GrafikController::class, 'grafikKemiringanForm']);
     Route::get('/grafik/distance', [GrafikController::class, 'totalDistancePerDayForm']);
     Route::get('/grafik/speed-map', [GrafikController::class, 'getSpeedMap']);
     Route::get('/grafik/speed', [GrafikController::class, 'getSpeedMapForm']);
