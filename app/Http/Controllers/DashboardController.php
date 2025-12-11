@@ -30,6 +30,12 @@ class DashboardController extends Controller
             ->where('active', 1)
             ->count();
 
+            $overKemiringanCount = Traccar::where('roll', '>', 3)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->where('active', 1)
+            ->count();
+
             // Hitung jumlah kendaraan dengan status 'online'
             $onlineCount = Traccar::where('status', 'bergerak')
             ->whereNotNull('latitude')
@@ -122,7 +128,7 @@ class DashboardController extends Controller
 
             // ========================== ini untuk datatable dashboard =====================
             // Ambil data dari model Traccar
-            $items = Traccar::where('status', 'mati')
+            $items = Traccar::where('roll', '>', 3)
                 ->where('active', 1)
                 ->get();
 
@@ -147,6 +153,7 @@ class DashboardController extends Controller
             
                                     
         return view('pages.dashboard.index')->with([
+            'overKemiringanCount' => $overKemiringanCount,
             'offlineCount' => $offlineCount,
             'onlineCount' => $onlineCount,
             'berhentiCount' => $berhentiCount,

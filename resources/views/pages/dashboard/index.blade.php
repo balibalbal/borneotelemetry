@@ -108,7 +108,7 @@
                   <div class="card">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <div class="card-title mb-0">
-                        <h5><i class="mdi mdi-excavator mdi-36px" style="color: red;"></i> Excavator Kemiringan > 3° ({{ $offlineCount }} unit)</h5>
+                        <h5><i class="mdi mdi-excavator mdi-36px" style="color: red;"></i> Excavator Kemiringan > 3° ({{ $overKemiringanCount }} unit)</h5>
                       </div>
                       <a href="{{ route('reports.index') }}" class="btn rounded-pill btn-success waves-effect waves-light"><i class="mdi mdi-file-document-outline"></i> Selengkapnya</a>
                     </div>
@@ -122,7 +122,8 @@
                                 {{-- <th>Latitude</th>
                                 <th>Longitude</th> --}}
                                 {{-- <th>Kecepatan (Km/h)</th> --}}
-                                <th>Total Jarak Tempuh</th>
+                                <th>Roll (Kemiringan)</th>
+                                <th>Pitch (Kemiringan)</th>
                                 <th>Alamat</th>
                                 <th>Status</th>
                                 <th>Google Maps</th>
@@ -150,7 +151,8 @@
                                 {{-- <td>{{ $item->latitude }}</td>
                                 <td>{{ $item->longitude }}</td> --}}
                                 {{-- <td>{{ $item->speed }} </td> --}}
-                                <td> {{ number_format((float)$item->total_distance, 2, ',', '.') }} KM</td>
+                                <td> {{ number_format((float)$item->roll, 2, ',', '.') }}°</td>
+                                <td> {{ number_format((float)$item->pitch, 2, ',', '.') }}°</td>
                                 <td>{{ $item->address }}</td>
                                 <td>
                                     @if($item->status == 'bergerak')
