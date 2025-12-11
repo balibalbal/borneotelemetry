@@ -84,6 +84,7 @@
                               <option value="">Pilih Jenis Kendaraan</option>
                               <option value="0" {{ $item->vehicle_type == '0' ? 'selected' : '' }}>Mobil</option>
                               <option value="1" {{ $item->vehicle_type == '1' ? 'selected' : '' }}>Sepeda Motor</option>
+                              <option value="2" {{ $item->vehicle_type == '2' ? 'selected' : '' }}>Excavator</option>
                             </select>
                             {{-- <input
                               type="text"

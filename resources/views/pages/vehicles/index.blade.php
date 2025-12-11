@@ -50,6 +50,8 @@
                                         <span class="badge bg-dark"><i class="mdi mdi-dump-truck"></i> Mobil</span>
                                     @elseif($item->vehicle_type == 1)
                                         <span class="badge bg-success"><i class="mdi mdi-motorbike"></i> Sepeda Motor</span>
+                                    @elseif($item->vehicle_type == 2)
+                                        <span class="badge bg-primary"><i class="mdi mdi-excavator"></i> Excavator</span>
                                     @else
                                         <span class="badge bg-secondary">Jenis Kendaraan Tidak Dikenal</span>
                                     @endif

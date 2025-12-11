@@ -74,6 +74,7 @@
                                 <option value="" {{ old('vehicle_type') == '' ? 'selected' : '' }}>Pilih Jenis Kendaraan</option>
                                 <option value="0" {{ old('vehicle_type') == '0' ? 'selected' : '' }}>Mobil</option>
                                 <option value="1" {{ old('vehicle_type') == '1' ? 'selected' : '' }}>Sepeda Motor</option>
+                                <option value="2" {{ old('vehicle_type') == '2' ? 'selected' : '' }}>Excavator</option>
                             </select>
                             <label for="vehicle_type">Jenis Kendaraan</label>
                             @error('vehicle_type')<div class="text-danger">{{ $message }}</div> @enderror
