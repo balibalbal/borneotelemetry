@@ -182,92 +182,124 @@
 
                         // Membuat grafik baru
                         chartInstance = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [
-                                {
-                                    label: 'Roll (Miring Kanan/Kiri)',
-                                    data: rollData,
-                                    borderColor: 'blue',
-                                    borderWidth: 2,
-                                    pointRadius: 0,
-                                    tension: 0.2
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: 'Roll (Miring Kanan/Kiri)',
+                                        data: rollData,
+                                        borderColor: 'blue',
+                                        borderWidth: 2,
+                                        pointRadius: 0,
+                                        tension: 0.2
+                                    },
+                                    {
+                                        label: 'Pitch (Miring Depan/Belakang)',
+                                        data: pitchData,
+                                        borderColor: 'orange',
+                                        borderWidth: 2,
+                                        pointRadius: 0,
+                                        tension: 0.2
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        min: -10,
+                                        max: 10,
+                                        title: {
+                                            display: true,
+                                            text: 'Derajat Kemiringan'
+                                        }
+                                    }
                                 },
-                                {
-                                    label: 'Pitch (Miring Depan/Belakang)',
-                                    data: pitchData,
-                                    borderColor: 'orange',
-                                    borderWidth: 2,
-                                    pointRadius: 0,
-                                    tension: 0.2
-                                }
-                            ]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    min: -10,
-                                    max: 10,
-                                    title: {
-                                        display: true,
-                                        text: 'Derajat Kemiringan'
+                                plugins: {
+                                    annotation: {
+                                        annotations: {
+                                            batasAtas: {
+                                                type: 'line',
+                                                yMin: 3,
+                                                yMax: 3,
+                                                borderColor: 'red',
+                                                borderWidth: 2,
+                                                borderDash: [6, 6],
+                                                label: {
+                                                    display: true,
+                                                    content: ['Batas kemiringan aman (+3°)'],
+                                                    backgroundColor: 'rgba(255,0,0,0.25)',
+                                                    position: 'end',
+                                                    yAdjust: -10,
+                                                    padding: 6,
+                                                    color: '#000',
+                                                    font: {
+                                                        size: 11,
+                                                        weight: 'bold'
+                                                    }
+                                                }
+                                            },
+                                            batasBawah: {
+                                                type: 'line',
+                                                yMin: -3,
+                                                yMax: -3,
+                                                borderColor: 'red',
+                                                borderWidth: 2,
+                                                borderDash: [6, 6],
+                                                label: {
+                                                    display: true,
+                                                    content: ['Batas kemiringan aman (-3°)'],
+                                                    backgroundColor: 'rgba(255,0,0,0.25)',
+                                                    position: 'start',
+                                                    yAdjust: 10,
+                                                    padding: 6,
+                                                    color: '#000',
+                                                    font: {
+                                                        size: 11,
+                                                        weight: 'bold'
+                                                    }
+                                                }
+                                            }
+
+                                        }
                                     }
                                 }
                             },
-                            plugins: {
-                                annotation: {
-                                    annotations: {
-                                        batasAtas: {
-                                            type: 'line',
-                                            yMin: 3,
-                                            yMax: 3,
-                                            borderColor: 'red',
-                                            borderWidth: 2,
-                                            borderDash: [6, 6],
-                                            label: {
-                                                display: true,
-                                                content: ['Batas kemiringan aman (+3°)'],
-                                                backgroundColor: 'rgba(255,0,0,0.25)',
-                                                position: 'end',
-                                                yAdjust: -10,
-                                                padding: 6,
-                                                color: '#000',
-                                                font: {
-                                                    size: 11,
-                                                    weight: 'bold'
-                                                }
-                                            }
-                                        },
-                                        batasBawah: {
-                                            type: 'line',
-                                            yMin: -3,
-                                            yMax: -3,
-                                            borderColor: 'red',
-                                            borderWidth: 2,
-                                            borderDash: [6, 6],
-                                            label: {
-                                                display: true,
-                                                content: ['Batas kemiringan aman (-3°)'],
-                                                backgroundColor: 'rgba(255,0,0,0.25)',
-                                                position: 'start',
-                                                yAdjust: 10,
-                                                padding: 6,
-                                                color: '#000',
-                                                font: {
-                                                    size: 11,
-                                                    weight: 'bold'
-                                                }
-                                            }
-                                        }
+                            plugins: [dangerZonePlugin, tiltTextPlugin]
+                        });
 
-                                    }
-                                }
+                        // Plugin untuk menambahkan teks keterangan kemiringan
+                        const tiltTextPlugin = {
+                            id: 'tiltTextPlugin',
+                            afterDraw(chart, args, options) {
+                                const { ctx, chartArea, scales } = chart;
+                                if (!chartArea) return;
+
+                                const yTop = scales.y.getPixelForValue(3);
+                                const yBottom = scales.y.getPixelForValue(-3);
+
+                                ctx.save();
+                                ctx.font = "12px Arial";
+                                ctx.fillStyle = "rgba(255,0,0,0.7)";
+                                ctx.textAlign = "center";
+
+                                // Teks bagian atas (nilai positif)
+                                ctx.fillText(
+                                    "+ Roll: Miring Kanan   |   + Pitch: Miring Belakang",
+                                    (chartArea.left + chartArea.right) / 2,
+                                    chartArea.top + 20
+                                );
+
+                                // Teks bagian bawah (nilai negatif)
+                                ctx.fillText(
+                                    "- Roll: Miring Kiri   |   - Pitch: Miring Depan",
+                                    (chartArea.left + chartArea.right) / 2,
+                                    chartArea.bottom - 10
+                                );
+
+                                ctx.restore();
                             }
-                        },
-                        plugins: [dangerZonePlugin]
-                    });
-
+                        };
 
 
                         // Menambahkan data ke dalam tabel
