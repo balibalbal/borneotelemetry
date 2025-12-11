@@ -55,7 +55,7 @@
                       <!-- Tombol Search -->
                       <div class="col-lg-2 mt-3">
                         <button class="btn rounded-pill btn-primary waves-effect waves-light" type="button" id="searchButton">
-                            <i class="mdi mdi-excavator me-sm-1"></i> Generate Grafik
+                            <i class="mdi mdi-excavator me-sm-1"></i> Generate
                         </button>
                       </div>
     
