@@ -14,7 +14,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $customer_id = auth()->user()->customer_id;
+        // $customer_id = auth()->user()->customer_id;
 
         // Ambil tanggal saat ini
         $currentDate = Carbon::now();
@@ -94,51 +94,6 @@ class DashboardController extends Controller
             ->count();
 
 
-            // Ambil kendaraan dengan kecepatan tertinggi untuk customer tertentu
-            $topSpeedVehicle = Traccar::whereNotNull('speed')
-                ->where('active', 1)
-                ->orderBy('speed', 'desc') // Urutkan berdasarkan kecepatan tertinggi
-                ->first([
-                    'traccars.speed', 
-                    'traccars.no_pol'
-                ]);
-
-            // Ambil kolom speed dan nopol
-            // print_r($topSpeedVehicle); exit;
-            if ($topSpeedVehicle) {
-                $topSpeed = $topSpeedVehicle->speed;
-                $nopol = $topSpeedVehicle->no_pol;
-            } else {
-                $topSpeed = null;
-                $nopol = null;
-            }
-
-            // Ambil kendaraan dengan jarak terjauh untuk customer tertentu
-            $topDistanceVehicle = Traccar::whereNotNull('total_distance')
-            ->orderBy('total_distance', 'desc')
-            ->first(['total_distance', 'no_pol']);
-
-            if ($topDistanceVehicle) {
-                $topDistance = $topDistanceVehicle->total_distance;
-                $nopolDistance = $topDistanceVehicle->no_pol;
-            } else {
-                $topDistance = null;
-                $nopolDistance = null;
-            }
-
-            // Ambil kendaraan dengan jarak terjauh untuk customer tertentu
-            // $topDistanceVehicle = Traccar::whereNotNull('total_distance')
-            // ->orderBy('total_distance', 'desc')
-            // ->first(['total_distance', 'no_pol']);
-
-            // if ($topDistanceVehicle) {
-            //     $topDistance = $topDistanceVehicle->total_distance;
-            //     $nopolDistance = $topDistanceVehicle->no_pol;
-            // } else {
-            //     $topDistance = null;
-            //     $nopolDistance = null;
-            // }
-
             // Ambil data kendaraan dengan status offline yang memiliki waktu
             $offlineData = Traccar::where('active', 1)
             ->whereNotNull('time')
@@ -190,12 +145,7 @@ class DashboardController extends Controller
                 // ->where('customer_id', $customer_id)
                 ->exists();
             
-            $total_dump = Transmission::where('door', 0)
-                ->where('customer_id', 4)
-                ->where('information_type', 5)
-                ->whereIn('device_id', [514, 515, 516, 517])
-                ->count();
-                        
+                                    
         return view('pages.dashboard.index')->with([
             'offlineCount' => $offlineCount,
             'onlineCount' => $onlineCount,
@@ -208,17 +158,9 @@ class DashboardController extends Controller
             'totalMotor' => $totalMotor,
             'totalMotorAktif' => $totalMotorAktif,
             'totalMotorTidakAktif' => $totalMotorTidakAktif,
-            'topSpeed' => $topSpeed,
-            'nopol' => $nopol,
-            'topDistance' => $topDistance,
-            'nopolDistance' => $nopolDistance,
             'longestOfflineDuration' => $formattedDuration,
             'vehicleWithLongestOffline' => $vehicleWithLongestOffline,
-            'total_dump' => $total_dump,
-            //'tgl_alarm' => $tgl_alarm,
-            //'tipe_alarm' => $tipe_alarm,
             'items' => $items,
-            //'customerAlarm' => $customer_alarm,
             'punyaMobil' => $punyaMobil,
             'punyaMotor' => $punyaMotor,
         ]);
