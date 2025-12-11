@@ -81,8 +81,8 @@
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Total Distance (km)</th>
-                        <th>Duration (jam)</th>
+                        <th>Roll</th>
+                        <th>Pitch</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,6 +95,7 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <!-- Include SweetAlert2 library -->
@@ -184,19 +185,32 @@
                             type: 'line',
                             data: {
                                 labels: labels,
-                                datasets: [{
+                                datasets: [
+                                    {
                                         label: 'Roll',
                                         data: rollData,
                                         fill: false,
-                                        borderColor: 'rgba(54, 162, 235, 1)',
-                                        tension: 0.1
+                                        borderColor: 'blue',
+                                        tension: 0.1,
+                                        segment: {
+                                            borderColor: ctx => {
+                                                const v = ctx.p1.parsed.y;
+                                                return (v > 3 || v < -3) ? 'red' : 'blue';
+                                            }
+                                        }
                                     },
                                     {
                                         label: 'Pitch',
                                         data: pitchData,
                                         fill: false,
-                                        borderColor: 'rgba(255, 99, 132, 1)',
-                                        tension: 0.1
+                                        borderColor: 'orange',
+                                        tension: 0.1,
+                                        segment: {
+                                            borderColor: ctx => {
+                                                const v = ctx.p1.parsed.y;
+                                                return (v > 3 || v < -3) ? 'red' : 'orange';
+                                            }
+                                        }
                                     }
                                 ]
                             },
@@ -204,20 +218,49 @@
                                 scales: {
                                     y: {
                                         beginAtZero: true,
+                                        min: -10,
+                                        max: 10,
                                         title: {
                                             display: true,
-                                            text: 'Value'
+                                            text: 'Derajat'
                                         }
-                                    },
-                                    x: {
-                                        title: {
-                                            display: true,
-                                            text: 'Date'
+                                    }
+                                },
+                                plugins: {
+                                    annotation: {
+                                        annotations: {
+                                            batasAtas: {
+                                                type: 'line',
+                                                yMin: 3,
+                                                yMax: 3,
+                                                borderColor: 'red',
+                                                borderWidth: 1,
+                                                borderDash: [6, 6],
+                                                label: {
+                                                    enabled: true,
+                                                    content: 'Batas +3°',
+                                                    position: 'end'
+                                                }
+                                            },
+                                            batasBawah: {
+                                                type: 'line',
+                                                yMin: -3,
+                                                yMax: -3,
+                                                borderColor: 'red',
+                                                borderWidth: 1,
+                                                borderDash: [6, 6],
+                                                label: {
+                                                    enabled: true,
+                                                    content: 'Batas -3°',
+                                                    position: 'start'
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                         });
+
 
                         // Menambahkan data ke dalam tabel
                         const tableBody = $('#dataTable tbody');
