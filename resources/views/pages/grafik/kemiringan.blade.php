@@ -226,11 +226,17 @@
                                             borderWidth: 2,
                                             borderDash: [6, 6],
                                             label: {
-                                                enabled: true,
-                                                backgroundColor: 'rgba(255,0,0,0.2)',
-                                                content: 'Batas kemiringan aman (+3°)',
+                                                display: true,
+                                                content: ['Batas kemiringan aman (+3°)'],
+                                                backgroundColor: 'rgba(255,0,0,0.25)',
                                                 position: 'end',
-                                                yAdjust: -10
+                                                yAdjust: -10,
+                                                padding: 6,
+                                                color: '#000',
+                                                font: {
+                                                    size: 11,
+                                                    weight: 'bold'
+                                                }
                                             }
                                         },
                                         batasBawah: {
@@ -241,13 +247,20 @@
                                             borderWidth: 2,
                                             borderDash: [6, 6],
                                             label: {
-                                                enabled: true,
-                                                backgroundColor: 'rgba(255,0,0,0.2)',
-                                                content: 'Batas kemiringan aman (-3°)',
+                                                display: true,
+                                                content: ['Batas kemiringan aman (-3°)'],
+                                                backgroundColor: 'rgba(255,0,0,0.25)',
                                                 position: 'start',
-                                                yAdjust: 10
+                                                yAdjust: 10,
+                                                padding: 6,
+                                                color: '#000',
+                                                font: {
+                                                    size: 11,
+                                                    weight: 'bold'
+                                                }
                                             }
                                         }
+
                                     }
                                 }
                             }
