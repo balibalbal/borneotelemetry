@@ -281,11 +281,11 @@
         }
 
         function updateVehicleCounts(response) {
-            $('#total-vehicles-count').text(response.totalVehicles + ' Kendaraan');
-            $('#total-mati-count').text(response.totalOffline + ' Kendaraan');
-            $('#total-bergerak-count').text(response.totalOnline + ' Kendaraan');
-            $('#total-diam-count').text(response.totalAck + ' Kendaraan');
-            $('#total-berhenti-count').text(response.totalEngine + ' Kendaraan');
+            $('#total-vehicles-count').text(response.totalVehicles + ' Excavator');
+            $('#total-mati-count').text(response.totalOffline + ' Excavator');
+            $('#total-bergerak-count').text(response.totalOnline + ' Excavator');
+            $('#total-diam-count').text(response.totalAck + ' Excavator');
+            $('#total-berhenti-count').text(response.totalEngine + ' Excavator');
             // $('#total-customer').text(response.totalCustomer+ ' Customer');
             $('#kecepatan').text(response.noPol+ ' - ' +response.maxSpeed+ ' Km/h');
         }
