@@ -486,6 +486,7 @@ function loadData() {
         .then(data => {
             if (data.result) {
                 deviceList = data.result;
+                console.log(deviceList);
                 updateCounters(deviceList);
                 renderList(deviceList);
                 updateMarkers(deviceList);
@@ -516,9 +517,9 @@ function renderList(devices) {
     
     let html = "";
     devices.forEach(d => {
-        const isActive = selectedImei === d.imei;
+        const isActive = selectedImei === d.vehicle_id;
         html += `
-            <div class="vehicle-item ${isActive ? 'active' : ''}" onclick="selectDevice('${d.imei}')">
+            <div class="vehicle-item ${isActive ? 'active' : ''}" onclick="selectDevice('${d.vehicle_id}')">
                 <div class="vehicle-name">${d.name || d.plate_number || d.imei}</div>
                 <div class="vehicle-status">
                     <span class="badge ${getStatusBadge(d.st)}">${d.ststr}</span>
