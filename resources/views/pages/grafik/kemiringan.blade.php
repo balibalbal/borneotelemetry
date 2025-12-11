@@ -182,84 +182,79 @@
 
                         // Membuat grafik baru
                         chartInstance = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: labels,
-                                datasets: [
-                                    {
-                                        label: 'Roll (Miring Kanan/Kiri)',
-                                        data: rollData,
-                                        fill: false,
-                                        borderColor: 'blue',
-                                        tension: 0.1,
-                                        segment: {
-                                            borderColor: ctx => {
-                                                const v = ctx.p1.parsed.y;
-                                                return (v > 3 || v < -3) ? 'red' : 'blue';
-                                            }
-                                        }
-                                    },
-                                    {
-                                        label: 'Pitch (Miring Depan/Belakang)',
-                                        data: pitchData,
-                                        fill: false,
-                                        borderColor: 'orange',
-                                        tension: 0.1,
-                                        segment: {
-                                            borderColor: ctx => {
-                                                const v = ctx.p1.parsed.y;
-                                                return (v > 3 || v < -3) ? 'red' : 'orange';
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        min: -10,
-                                        max: 10,
-                                        title: {
-                                            display: true,
-                                            text: 'Derajat'
-                                        }
-                                    }
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Roll (Miring Kanan/Kiri)',
+                                    data: rollData,
+                                    borderColor: 'blue',
+                                    borderWidth: 2,
+                                    pointRadius: 0,
+                                    tension: 0.2
                                 },
-                                plugins: {
-                                    annotation: {
-                                        annotations: {
-                                            batasAtas: {
-                                                type: 'line',
-                                                yMin: 3,
-                                                yMax: 3,
-                                                borderColor: 'red',
-                                                borderWidth: 1,
-                                                borderDash: [6, 6],
-                                                label: {
-                                                    enabled: true,
-                                                    content: 'Batas +3°',
-                                                    position: 'end'
-                                                }
-                                            },
-                                            batasBawah: {
-                                                type: 'line',
-                                                yMin: -3,
-                                                yMax: -3,
-                                                borderColor: 'red',
-                                                borderWidth: 1,
-                                                borderDash: [6, 6],
-                                                label: {
-                                                    enabled: true,
-                                                    content: 'Batas -3°',
-                                                    position: 'start'
-                                                }
+                                {
+                                    label: 'Pitch (Miring Depan/Belakang)',
+                                    data: pitchData,
+                                    borderColor: 'orange',
+                                    borderWidth: 2,
+                                    pointRadius: 0,
+                                    tension: 0.2
+                                }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    min: -10,
+                                    max: 10,
+                                    title: {
+                                        display: true,
+                                        text: 'Derajat Kemiringan'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                annotation: {
+                                    annotations: {
+                                        batasAtas: {
+                                            type: 'line',
+                                            yMin: 3,
+                                            yMax: 3,
+                                            borderColor: 'red',
+                                            borderWidth: 2,
+                                            borderDash: [6, 6],
+                                            label: {
+                                                enabled: true,
+                                                backgroundColor: 'rgba(255,0,0,0.2)',
+                                                content: 'Batas kemiringan aman (+3°)',
+                                                position: 'end',
+                                                yAdjust: -10
+                                            }
+                                        },
+                                        batasBawah: {
+                                            type: 'line',
+                                            yMin: -3,
+                                            yMax: -3,
+                                            borderColor: 'red',
+                                            borderWidth: 2,
+                                            borderDash: [6, 6],
+                                            label: {
+                                                enabled: true,
+                                                backgroundColor: 'rgba(255,0,0,0.2)',
+                                                content: 'Batas kemiringan aman (-3°)',
+                                                position: 'start',
+                                                yAdjust: 10
                                             }
                                         }
                                     }
                                 }
                             }
-                        });
+                        },
+                        plugins: [dangerZonePlugin]
+                    });
+
 
 
                         // Menambahkan data ke dalam tabel
@@ -290,6 +285,31 @@
                 });
             });
         });
+
+        // Plugin untuk shading zona merah
+        const dangerZonePlugin = {
+            id: 'dangerZone',
+            beforeDraw(chart, args, options) {
+                const { ctx, chartArea, scales } = chart;
+                if (!chartArea) return;
+
+                const yTopDanger = scales.y.getPixelForValue(3);
+                const yBottomDanger = scales.y.getPixelForValue(-3);
+
+                ctx.save();
+
+                // Zona merah atas
+                ctx.fillStyle = "rgba(255, 0, 0, 0.12)";
+                ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, yTopDanger - chartArea.top);
+
+                // Zona merah bawah
+                ctx.fillStyle = "rgba(255, 0, 0, 0.12)";
+                ctx.fillRect(chartArea.left, yBottomDanger, chartArea.right - chartArea.left, chartArea.bottom - yBottomDanger);
+
+                ctx.restore();
+            }
+        };
+
 
         function validateDates() {
             var startDateInput = document.getElementById("start_date");
