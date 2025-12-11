@@ -47,7 +47,7 @@
                         </a>
                         <ul class="dropdown-menu">
                           @if (auth()->user()->hasPermissionTo('monitoring-live-tracking'))
-                            <li><a class="dropdown-item" href="{{ route('traccars.index') }}"><span class="mdi mdi-map-marker-radius"></span> Monitoring Kendaraan</a></li>
+                            <li><a class="dropdown-item" href="{{ route('traccars.index') }}"><span class="mdi mdi-map-marker-radius"></span> Monitoring Excavator</a></li>
                           @endif
                           @if (auth()->user()->hasPermissionTo('tracking-perjalanan'))
                             <li><a class="dropdown-item" href="{{ route('histories.index') }}"><span class="mdi mdi-map-marker-path"></span> Historical</a></li>
