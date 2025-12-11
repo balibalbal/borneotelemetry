@@ -174,8 +174,8 @@
                         // Menampilkan Grafik
                         const distances = response.distances;
                         const labels = distances.map(item => item.time);
-                        const distanceData = distances.map(item => item.roll);
-                        const durationData = distances.map(item => item.pitch);
+                        const rollData = distances.map(item => item.roll);
+                        const pitchData = distances.map(item => item.pitch);
 
                         const ctx = document.getElementById('distanceChart').getContext('2d');
 
@@ -186,14 +186,14 @@
                                 labels: labels,
                                 datasets: [{
                                         label: 'Roll',
-                                        data: distanceData,
+                                        data: rollData,
                                         fill: false,
                                         borderColor: 'rgba(54, 162, 235, 1)',
                                         tension: 0.1
                                     },
                                     {
                                         label: 'Pitch',
-                                        data: durationData,
+                                        data: pitchData,
                                         fill: false,
                                         borderColor: 'rgba(255, 99, 132, 1)',
                                         tension: 0.1
@@ -220,24 +220,24 @@
                         });
 
                         // Menambahkan data ke dalam tabel
-                        // const tableBody = $('#dataTable tbody');
-                        // tableBody.empty(); // Hapus data sebelumnya
+                        const tableBody = $('#dataTable tbody');
+                        tableBody.empty(); // Hapus data sebelumnya
 
-                        // distances.forEach(function(distance) {
-                        //     const row = `<tr>
-                        //                     <td>${distance.day}</td>
-                        //                     <td>${distance.total_km} km</td>
-                        //                     <td>${distance.duration_hours} jam</td>
-                        //                   </tr>`;
-                        //     tableBody.append(row);
-                        // });
+                        distances.forEach(function(distance) {
+                            const row = `<tr>
+                                            <td>${distance.time}</td>
+                                            <td>${distance.roll} km</td>
+                                            <td>${distance.pitch} jam</td>
+                                          </tr>`;
+                            tableBody.append(row);
+                        });
 
                         // Menampilkan grafik dan tabel setelah data berhasil diambil
                         $('#distanceChart').show();
-                        // $('#dataTable').show();
+                        $('#dataTable').show();
 
                         // Mengaktifkan tombol kembali setelah data ditampilkan
-                        // $('#searchButton').prop('disabled', false);
+                        $('#searchButton').prop('disabled', false);
                     },
                     error: function(xhr, status, error) {
                         console.error('Error fetching data:', error);
