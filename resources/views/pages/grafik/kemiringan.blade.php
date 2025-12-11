@@ -7,7 +7,7 @@
 
         /* FULLSCREEN LOADING OVERLAY */
         #loadingOverlay {
-            display: none;
+            display: none;                 /* default hidden */
             position: fixed;
             top: 0;
             left: 0;
@@ -16,9 +16,12 @@
             background: rgba(255,255,255,0.7);
             z-index: 9999;
             backdrop-filter: blur(2px);
+
+            display: flex !important;      /* ★ PENTING: selalu mode FLEX */
             justify-content: center;
             align-items: center;
         }
+
 
         /* SPINNER */
         .spinner {
