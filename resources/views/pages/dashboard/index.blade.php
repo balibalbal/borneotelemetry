@@ -88,7 +88,7 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-danger"
-                            ><i class="mdi mdi-truck-remove mdi-20px"></i
+                            ><i class="mdi mdi-excavator mdi-20px"></i
                           ></span>
                         </div>
                         <h4 class="ms-1 mb-0 display-6">{{ $offlineCount }}</h4>
