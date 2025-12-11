@@ -152,7 +152,7 @@
                     type: 'GET',
                     success: function(response) {
                         // Cek jika data kosong
-                        if (response.degres.length === 0) {
+                        if (response.distances.length === 0) {
                             if (chartInstance) {
                                 chartInstance.destroy();
                             }
