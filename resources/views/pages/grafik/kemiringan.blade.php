@@ -173,9 +173,9 @@
 
                         // Menampilkan Grafik
                         const distances = response.distances;
-                        const labels = distances.map(item => item.day);
-                        const distanceData = distances.map(item => item.total_km);
-                        const durationData = distances.map(item => item.duration_hours);
+                        const labels = distances.map(item => item.time);
+                        const distanceData = distances.map(item => item.roll);
+                        const durationData = distances.map(item => item.pitch);
 
                         const ctx = document.getElementById('distanceChart').getContext('2d');
 
@@ -185,14 +185,14 @@
                             data: {
                                 labels: labels,
                                 datasets: [{
-                                        label: 'Total Distance (km)',
+                                        label: 'Roll',
                                         data: distanceData,
                                         fill: false,
                                         borderColor: 'rgba(54, 162, 235, 1)',
                                         tension: 0.1
                                     },
                                     {
-                                        label: 'Duration (jam)',
+                                        label: 'Pitch',
                                         data: durationData,
                                         fill: false,
                                         borderColor: 'rgba(255, 99, 132, 1)',
