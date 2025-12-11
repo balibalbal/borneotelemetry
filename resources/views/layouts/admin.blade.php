@@ -65,7 +65,7 @@
 
     @include('includes.script')
   </body>
-  @vite('resources/js/app.js')
+  {{-- @vite('resources/js/app.js') --}}
 
   <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     
