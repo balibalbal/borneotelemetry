@@ -55,7 +55,7 @@
                       <!-- Tombol Search -->
                       <div class="col-lg-2 mt-3">
                         <button class="btn rounded-pill btn-primary waves-effect waves-light" type="button" id="searchButton">
-                            <i class="mdi mdi-car-search me-sm-1"></i> Search
+                            <i class="mdi mdi-excavator me-sm-1"></i> Generate Grafik
                         </button>
                       </div>
     
@@ -158,7 +158,7 @@
             // ===============================================
             $('#vehicle_id').select2({
                 allowClear: true,
-                placeholder: 'Select Vehicle',
+                placeholder: 'Select Vehicle/Excavator',
                 dropdownAutoWidth: true,
                 width: '100%',
             });
