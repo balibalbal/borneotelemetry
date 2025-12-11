@@ -107,7 +107,7 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-danger"
-                            ><i class="mdi mdi-truck-remove mdi-20px"></i
+                            ><i class="mdi mdi-excavator mdi-20px"></i
                           ></span>
                         </div>
                         <span class="ms-1 mb-0" id="total-mati-count"></span>
@@ -123,7 +123,7 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-success"
-                            ><i class="mdi mdi-truck-check mdi-20px"></i
+                            ><i class="mdi mdi-excavator mdi-20px"></i
                           ></span>
                         </div>
                         <span class="ms-1 mb-0" id="total-bergerak-count"></span>
@@ -139,7 +139,7 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-warning">
-                            <i class="mdi mdi-truck mdi-20px"></i
+                            <i class="mdi mdi-excavator mdi-20px"></i
                           ></span>
                         </div>
                         <span class="ms-1 mb-0" id="total-berhenti-count"></span>
@@ -155,7 +155,7 @@
                     <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-dark">
-                            <i class="mdi mdi-truck-alert mdi-20px"></i>
+                            <i class="mdi mdi-excavator mdi-20px"></i>
                           </span>
                         </div>
                         <span class="ms-1 mb-0" id="total-diam-count"></span>
@@ -171,12 +171,12 @@
                       <div class="d-flex align-items-center mb-2 pb-1">
                         <div class="avatar me-2">
                           <span class="avatar-initial rounded bg-label-primary"
-                            ><i class="mdi mdi-bus-school mdi-20px"></i
+                            ><i class="mdi mdi-excavator mdi-20px"></i
                           ></span>
                         </div>
                         <span class="ms-1 mb-0" id="total-vehicles-count"></span>
                       </div>
-                      <p class="mb-0 text-heading">Total Kendaraan</p>
+                      <p class="mb-0 text-heading">Total Excavator</p>
                     </div>
                 </div>
             </a>
