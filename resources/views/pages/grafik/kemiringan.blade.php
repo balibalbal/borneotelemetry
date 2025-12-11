@@ -48,8 +48,8 @@
         <div class="card mb-3">
             <div class="card-header header-elements">
               <div>
-                <h5 class="card-title mb-0">Sudut Kemiringan</h5>
-                <small class="text-muted">Laporan yang dapat di-generate ke Excel maksimal 1 bulan</small>
+                <h5 class="card-title mb-0">Grafik Sudut Kemiringan</h5>
+                <small class="text-muted">Grafik yang dapat di-generate maksimal 1 bulan</small>
               </div>
             </div>
     

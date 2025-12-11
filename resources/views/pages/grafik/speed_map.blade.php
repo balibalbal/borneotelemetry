@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="card-footer d-flex justify-content-between">
-                    <button class="btn rounded-pill btn-dark waves-effect waves-light" type="submit" id="trackButton"><i class="mdi mdi-car-search-outline me-sm-1"></i> Track Now</button>
+                    <button class="btn rounded-pill btn-dark waves-effect waves-light" type="submit" id="trackButton"><i class="mdi mdi-car-search-outline me-sm-1"></i> Generate</button>
                 </div>
             </form>
         </div>

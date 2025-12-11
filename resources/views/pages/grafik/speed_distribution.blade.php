@@ -59,7 +59,7 @@
                             <div class="col-lg-2 mt-3">
                                 <button class="btn rounded-pill btn-primary waves-effect waves-light" type="button"
                                     id="searchButton">
-                                    <i class="mdi mdi-car-search me-sm-1"></i> Search
+                                    <i class="mdi mdi-car-search me-sm-1"></i> Generate
                                 </button>
                             </div>
 

@@ -13,8 +13,8 @@
         <div class="card mb-3">
             <div class="card-header header-elements">
               <div>
-                <h5 class="card-title mb-0">Daily Distance</h5>
-                <small class="text-muted">Laporan yang dapat di-generate ke Excel maksimal 1 bulan</small>
+                <h5 class="card-title mb-0">Jarak Tempuh Harian</h5>
+                <small class="text-muted">Grafik yang dapat di-generate maksimal 1 bulan</small>
               </div>
             </div>
     
@@ -55,7 +55,7 @@
                       <!-- Tombol Search -->
                       <div class="col-lg-2 mt-3">
                         <button class="btn rounded-pill btn-primary waves-effect waves-light" type="button" id="searchButton">
-                            <i class="mdi mdi-car-search me-sm-1"></i> Search
+                            <i class="mdi mdi-car-search me-sm-1"></i> Generate
                         </button>
                       </div>
     
