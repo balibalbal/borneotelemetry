@@ -152,7 +152,7 @@
                     type: 'GET',
                     success: function(response) {
                         // Cek jika data kosong
-                        if (response.distances.length === 0) {
+                        if (response.degres.length === 0) {
                             if (chartInstance) {
                                 chartInstance.destroy();
                             }
@@ -173,10 +173,10 @@
                         }
 
                         // Menampilkan Grafik
-                        const distances = response.distances;
-                        const labels = distances.map(item => item.time);
-                        const rollData = distances.map(item => item.roll);
-                        const pitchData = distances.map(item => item.pitch);
+                        const degres = response.distances;
+                        const labels = degres.map(item => item.time);
+                        const rollData = degres.map(item => item.roll);
+                        const pitchData = degres.map(item => item.pitch);
 
                         const ctx = document.getElementById('distanceChart').getContext('2d');
 
@@ -187,7 +187,7 @@
                                 labels: labels,
                                 datasets: [
                                     {
-                                        label: 'Roll',
+                                        label: 'Roll (Miring Kanan/Kiri)',
                                         data: rollData,
                                         fill: false,
                                         borderColor: 'blue',
@@ -200,7 +200,7 @@
                                         }
                                     },
                                     {
-                                        label: 'Pitch',
+                                        label: 'Pitch (Miring Depan/Belakang)',
                                         data: pitchData,
                                         fill: false,
                                         borderColor: 'orange',
@@ -266,11 +266,11 @@
                         const tableBody = $('#dataTable tbody');
                         tableBody.empty(); // Hapus data sebelumnya
 
-                        distances.forEach(function(distance) {
+                        degres.forEach(function(degre) {
                             const row = `<tr>
-                                            <td>${distance.time}</td>
-                                            <td>${distance.roll} km</td>
-                                            <td>${distance.pitch} jam</td>
+                                            <td>${degre.time}</td>
+                                            <td>${degre.roll} </td>
+                                            <td>${degre.pitch} </td>
                                           </tr>`;
                             tableBody.append(row);
                         });
