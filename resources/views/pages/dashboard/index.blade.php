@@ -108,8 +108,7 @@
                   <div class="card">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <div class="card-title mb-0">
-                        {{-- <h5 class="m-0 me-2">On route vehicles</h5> --}}
-                        <h5><i class="mdi mdi-excavator mdi-36px" style="color: red;"></i> Excavator Kemiringan > 3<i class="fa-solid fa-circle-small" style="font-size:10px;"></i> ({{ $offlineCount }} unit)</h5><a href="{{ route('reports.index') }}" class="btn rounded-pill btn-success waves-effect waves-light"><i class="mdi mdi-file-document-outline"></i> Selengkapnya</a>
+                        <h5><i class="mdi mdi-excavator mdi-36px" style="color: red;"></i> Excavator Kemiringan > 3° ({{ $offlineCount }} unit)</h5><a href="{{ route('reports.index') }}" class="btn rounded-pill btn-success waves-effect waves-light"><i class="mdi mdi-file-document-outline"></i> Selengkapnya</a>
                       </div>
                       
                     </div>
