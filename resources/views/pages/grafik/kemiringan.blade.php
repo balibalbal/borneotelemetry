@@ -75,7 +75,7 @@
         <!-- Grafik Distance -->
         <canvas id="distanceChart" width="800" height="400" class="mt-4" style="display: none;"></canvas>
 
-        <div class="card shadow mt-4">
+        {{-- <div class="card shadow mt-4">
             <!-- Tabel Data -->
             <table class="table table-striped mt-4" id="dataTable" style="display: none;">
                 <thead>
@@ -89,7 +89,7 @@
                     <!-- Data akan diisi dengan AJAX -->
                 </tbody>
             </table>
-        </div>
+        </div> --}}
     </div>
 @endsection
 
@@ -102,250 +102,250 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-$(document).ready(function () {
+        $(document).ready(function () {
 
-    let chartInstance = null;
+            let chartInstance = null;
 
-    // ================================
-    //  GABUNGAN PLUGIN (Zona Merah + Label Arah + Panah)
-    // ================================
-    const tiltPlugin = {
-        id: "tiltPlugin",
-        afterDraw(chart) {
-            const { ctx, chartArea, scales } = chart;
-            if (!chartArea) return;
+            // ================================
+            //  GABUNGAN PLUGIN (Zona Merah + Label Arah + Panah)
+            // ================================
+            const tiltPlugin = {
+                id: "tiltPlugin",
+                afterDraw(chart) {
+                    const { ctx, chartArea, scales } = chart;
+                    if (!chartArea) return;
 
-            const yTop = scales.y.getPixelForValue(3);
-            const yBottom = scales.y.getPixelForValue(-3);
-            const { left, right, top, bottom } = chartArea;
+                    const yTop = scales.y.getPixelForValue(3);
+                    const yBottom = scales.y.getPixelForValue(-3);
+                    const { left, right, top, bottom } = chartArea;
 
-            ctx.save();
+                    ctx.save();
 
-            // ----------------------------
-            // 1) ZONA MERAH (ATAS & BAWAH)
-            // ----------------------------
-            ctx.fillStyle = "rgba(255,0,0,0.12)";
-            ctx.fillRect(left, top, right - left, yTop - top);           // zona atas
-            ctx.fillRect(left, yBottom, right - left, bottom - yBottom); // zona bawah
+                    // ----------------------------
+                    // 1) ZONA MERAH (ATAS & BAWAH)
+                    // ----------------------------
+                    ctx.fillStyle = "rgba(255,0,0,0.12)";
+                    ctx.fillRect(left, top, right - left, yTop - top);           // zona atas
+                    ctx.fillRect(left, yBottom, right - left, bottom - yBottom); // zona bawah
 
-            // ----------------------------
-            // 2) LABEL & PANAH ARAH
-            // ----------------------------
-            ctx.font = "13px Arial";
-            ctx.fillStyle = "#000";
-            ctx.textAlign = "center";
+                    // ----------------------------
+                    // 2) LABEL & PANAH ARAH
+                    // ----------------------------
+                    ctx.font = "13px Arial";
+                    ctx.fillStyle = "#000";
+                    ctx.textAlign = "center";
 
-            // Atas (+)
-            ctx.fillText(
-                "↗ +Roll: Kanan   |   +Pitch: Belakang ↗",
-                (left + right) / 2,
-                top + 18
-            );
+                    // Atas (+)
+                    ctx.fillText(
+                        "↗ +Roll: Miring ke Kanan   |   +Pitch: Miring Ke Belakang ↗",
+                        (left + right) / 2,
+                        top + 18
+                    );
 
-            // Bawah (–)
-            ctx.fillText(
-                "↙ -Roll: Kiri     |     -Pitch: Depan ↙",
-                (left + right) / 2,
-                bottom - 10
-            );
+                    // Bawah (–)
+                    ctx.fillText(
+                        "↙ -Roll: Miring Ke Kiri     |     -Pitch: Miring Ke Depan ↙",
+                        (left + right) / 2,
+                        bottom - 10
+                    );
 
-            ctx.restore();
-        }
-    };
+                    ctx.restore();
+                }
+            };
 
-    // ===============================================
-    //  EVENT SEARCH
-    // ===============================================
-    $('#vehicle_id').select2({
-        allowClear: true,
-        placeholder: 'Select Vehicle',
-        dropdownAutoWidth: true,
-        width: '100%',
-    });
-
-    $('#searchButton').on('click', function () {
-        if (!validateDates()) return;
-
-        $('#distanceChart').show();
-        $('#dataTable').show();
-
-        let vehicleId = $('#vehicle_id').val();
-        let startDate = $('#start_date').val();
-        let endDate = $('#end_date').val();
-
-        if (!vehicleId) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Plat Number Empty',
-                text: 'Plat number must be fill',
+            // ===============================================
+            //  EVENT SEARCH
+            // ===============================================
+            $('#vehicle_id').select2({
+                allowClear: true,
+                placeholder: 'Select Vehicle',
+                dropdownAutoWidth: true,
+                width: '100%',
             });
-            return;
-        }
 
-        let url = `/grafik/kemiringan?vehicle_id=${vehicleId}&start_date=${startDate}&end_date=${endDate}`;
+            $('#searchButton').on('click', function () {
+                if (!validateDates()) return;
 
-        $('#distanceChart').hide();
-        $('#dataTable').hide();
+                $('#distanceChart').show();
+                // $('#dataTable').show();
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (response) {
+                let vehicleId = $('#vehicle_id').val();
+                let startDate = $('#start_date').val();
+                let endDate = $('#end_date').val();
 
-                if (response.distances.length === 0) {
-                    if (chartInstance) chartInstance.destroy();
-
+                if (!vehicleId) {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'Data Not Found',
-                        text: 'Tidak ada data untuk kendaraan ini pada periode yang dipilih.',
+                        title: 'Plat Number Empty',
+                        text: 'Plat number must be fill',
                     });
-
                     return;
                 }
 
-                if (chartInstance) chartInstance.destroy();
+                let url = `/grafik/kemiringan?vehicle_id=${vehicleId}&start_date=${startDate}&end_date=${endDate}`;
 
-                const data = response.distances;
-                const labels = data.map(i => i.time);
-                const rollData = data.map(i => i.roll);
-                const pitchData = data.map(i => i.pitch);
+                $('#distanceChart').hide();
+                // $('#dataTable').hide();
 
-                const ctx = document.getElementById('distanceChart').getContext('2d');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (response) {
 
-                chartInstance = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Roll (Kanan/Kiri)',
-                                data: rollData,
-                                borderColor: '#007bff',
-                                borderWidth: 2,
-                                pointRadius: 0,
-                                tension: 0.2
-                            },
-                            {
-                                label: 'Pitch (Depan/Belakang)',
-                                data: pitchData,
-                                borderColor: '#ff8800',
-                                borderWidth: 2,
-                                pointRadius: 0,
-                                tension: 0.2
-                            }
-                        ]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                min: -10,
-                                max: 10,
-                                title: {
-                                    display: true,
-                                    text: 'Derajat Kemiringan'
-                                }
-                            }
-                        },
-                        plugins: {
-                            annotation: {
-                                annotations: {
-                                    batasAtas: {
-                                        type: 'line',
-                                        yMin: 3,
-                                        yMax: 3,
-                                        borderColor: 'red',
-                                        borderWidth: 1.8,
-                                        borderDash: [6, 6],
-                                        label: {
-                                            display: true,
-                                            content: ['+3° Batas Aman'],
-                                            backgroundColor: 'rgba(255,0,0,0.25)',
-                                            yAdjust: -10,
-                                            padding: 6,
-                                            color: '#000',
-                                            font: { size: 11, weight: 'bold' }
-                                        }
+                        if (response.distances.length === 0) {
+                            if (chartInstance) chartInstance.destroy();
+
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Data Not Found',
+                                text: 'Tidak ada data untuk kendaraan ini pada periode yang dipilih.',
+                            });
+
+                            return;
+                        }
+
+                        if (chartInstance) chartInstance.destroy();
+
+                        const data = response.distances;
+                        const labels = data.map(i => i.time);
+                        const rollData = data.map(i => i.roll);
+                        const pitchData = data.map(i => i.pitch);
+
+                        const ctx = document.getElementById('distanceChart').getContext('2d');
+
+                        chartInstance = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: 'Roll (Kanan/Kiri)',
+                                        data: rollData,
+                                        borderColor: '#007bff',
+                                        borderWidth: 2,
+                                        pointRadius: 0,
+                                        tension: 0.2
                                     },
-                                    batasBawah: {
-                                        type: 'line',
-                                        yMin: -3,
-                                        yMax: -3,
-                                        borderColor: 'red',
-                                        borderWidth: 1.8,
-                                        borderDash: [6, 6],
-                                        label: {
+                                    {
+                                        label: 'Pitch (Depan/Belakang)',
+                                        data: pitchData,
+                                        borderColor: '#ff8800',
+                                        borderWidth: 2,
+                                        pointRadius: 0,
+                                        tension: 0.2
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        min: -10,
+                                        max: 10,
+                                        title: {
                                             display: true,
-                                            content: ['-3° Batas Aman'],
-                                            backgroundColor: 'rgba(255,0,0,0.25)',
-                                            yAdjust: 10,
-                                            padding: 6,
-                                            color: '#000',
-                                            font: { size: 11, weight: 'bold' }
+                                            text: 'Derajat Kemiringan'
+                                        }
+                                    }
+                                },
+                                plugins: {
+                                    annotation: {
+                                        annotations: {
+                                            batasAtas: {
+                                                type: 'line',
+                                                yMin: 3,
+                                                yMax: 3,
+                                                borderColor: 'red',
+                                                borderWidth: 1.8,
+                                                borderDash: [6, 6],
+                                                label: {
+                                                    display: true,
+                                                    content: ['+3° Batas Aman'],
+                                                    backgroundColor: 'rgba(255,0,0,0.25)',
+                                                    yAdjust: -10,
+                                                    padding: 6,
+                                                    color: '#000',
+                                                    font: { size: 11, weight: 'bold' }
+                                                }
+                                            },
+                                            batasBawah: {
+                                                type: 'line',
+                                                yMin: -3,
+                                                yMax: -3,
+                                                borderColor: 'red',
+                                                borderWidth: 1.8,
+                                                borderDash: [6, 6],
+                                                label: {
+                                                    display: true,
+                                                    content: ['-3° Batas Aman'],
+                                                    backgroundColor: 'rgba(255,0,0,0.25)',
+                                                    yAdjust: 10,
+                                                    padding: 6,
+                                                    color: '#000',
+                                                    font: { size: 11, weight: 'bold' }
+                                                }
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        }
-                    },
-                    plugins: [tiltPlugin]
+                            },
+                            plugins: [tiltPlugin]
+                        });
+
+                        // ========== TABLE ==========
+                        // let tbody = $('#dataTable tbody');
+                        // tbody.empty();
+
+                        // data.forEach(d => {
+                        //     tbody.append(`
+                        //         <tr>
+                        //             <td>${d.time}</td>
+                        //             <td>${d.roll}</td>
+                        //             <td>${d.pitch}</td>
+                        //         </tr>
+                        //     `);
+                        // });
+
+                        $('#distanceChart').show();
+                        // $('#dataTable').show();
+                    }
                 });
+            });
 
-                // ========== TABLE ==========
-                let tbody = $('#dataTable tbody');
-                tbody.empty();
 
-                data.forEach(d => {
-                    tbody.append(`
-                        <tr>
-                            <td>${d.time}</td>
-                            <td>${d.roll}</td>
-                            <td>${d.pitch}</td>
-                        </tr>
-                    `);
-                });
+            // ===============================================
+            // VALIDASI TANGGAL
+            // ===============================================
+            function validateDates() {
+                var s = $("#start_date").val();
+                var e = $("#end_date").val();
 
-                $('#distanceChart').show();
-                $('#dataTable').show();
+                if (s === "" || e === "") {
+                    showDateError("Tanggal awal dan tanggal akhir tidak boleh kosong.");
+                    return false;
+                }
+
+                var diff = (new Date(e) - new Date(s)) / (1000 * 3600 * 24);
+
+                if (diff > 31) {
+                    showDateError("Rentang tanggal tidak boleh lebih dari 31 hari.");
+                    return false;
+                }
+
+                $("#dateAlert").addClass("d-none");
+                return true;
+            }
+
+            function showDateError(msg) {
+                let alertBox = $("#dateAlert");
+                alertBox.removeClass("d-none");
+                alertBox.html(`${msg} <button class="btn-close" onclick="closeAlert()"></button>`);
             }
         });
-    });
 
-
-    // ===============================================
-    // VALIDASI TANGGAL
-    // ===============================================
-    function validateDates() {
-        var s = $("#start_date").val();
-        var e = $("#end_date").val();
-
-        if (s === "" || e === "") {
-            showDateError("Tanggal awal dan tanggal akhir tidak boleh kosong.");
-            return false;
+        function closeAlert() {
+            $("#dateAlert").addClass("d-none");
         }
-
-        var diff = (new Date(e) - new Date(s)) / (1000 * 3600 * 24);
-
-        if (diff > 31) {
-            showDateError("Rentang tanggal tidak boleh lebih dari 31 hari.");
-            return false;
-        }
-
-        $("#dateAlert").addClass("d-none");
-        return true;
-    }
-
-    function showDateError(msg) {
-        let alertBox = $("#dateAlert");
-        alertBox.removeClass("d-none");
-        alertBox.html(`${msg} <button class="btn-close" onclick="closeAlert()"></button>`);
-    }
-});
-
-function closeAlert() {
-    $("#dateAlert").addClass("d-none");
-}
-</script>
+    </script>
 
 @endpush
 
