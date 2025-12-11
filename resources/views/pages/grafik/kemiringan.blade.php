@@ -38,11 +38,7 @@
 
 @extends('layouts.admin')
 @section('title', 'Grafik Distance')
-@section('content')
-    <div id="loadingOverlay">
-        <div class="spinner"></div>
-    </div>
-
+@section('content')   
     <div class="container-fluid">
         <div class="card mb-3">
             <div class="card-header header-elements">
@@ -108,6 +104,10 @@
 
         <!-- Grafik Distance -->
         <canvas id="distanceChart" width="800" height="400" class="mt-4" style="display: none;"></canvas>
+
+        <div id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
 
         {{-- <div class="card shadow mt-4">
             <!-- Tabel Data -->
