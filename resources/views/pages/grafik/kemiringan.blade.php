@@ -4,11 +4,45 @@
             height: 45px;
             padding: 10px;
         }
+
+        /* FULLSCREEN LOADING OVERLAY */
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.7);
+            z-index: 9999;
+            backdrop-filter: blur(2px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* SPINNER */
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #ccc;
+            border-top-color: #007bff;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 @endpush
+
 @extends('layouts.admin')
 @section('title', 'Grafik Distance')
 @section('content')
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
     <div class="container-fluid">
         <div class="card mb-3">
             <div class="card-header header-elements">
@@ -190,6 +224,11 @@
                 $.ajax({
                     url: url,
                     type: 'GET',
+
+                    beforeSend: function() {
+                        $("#loadingOverlay").fadeIn(150);
+                    },
+
                     success: function (response) {
 
                         if (response.distances.length === 0) {
@@ -291,6 +330,8 @@
                             plugins: [tiltPlugin]
                         });
 
+                        
+
                         // ========== TABLE ==========
                         // let tbody = $('#dataTable tbody');
                         // tbody.empty();
@@ -307,7 +348,11 @@
 
                         $('#distanceChart').show();
                         // $('#dataTable').show();
-                    }
+                    }, 
+
+                    complete: function () {
+                        $("#loadingOverlay").fadeOut(150);
+                    },
                 });
             });
 
