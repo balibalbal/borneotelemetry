@@ -209,6 +209,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_map.api_key') }}"></script>
 
 <script>
     var mapData = [];
@@ -234,11 +235,6 @@
         attribution: '&copy; Esri World Imagery'
     });
 
-
-
-        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        // }).addTo(mymap);
 
     // Tambahkan kontrol untuk memilih layer
     var baseMaps = {
@@ -353,6 +349,25 @@
                             break;
                         default:
                             carImage = 'backend/assets/img/illustrations/default-mtr.png';
+                    }
+                } else if (data.vehicle_type === 2) {
+                    // console.log('helo motor')
+                    // Vehicle type 1
+                    switch (data.status) {
+                        case 'mati':
+                            carImage = 'backend/assets/excavator/excavator-off.png';
+                            break;
+                        case 'bergerak':
+                            carImage = 'backend/assets/excavator/excavator-on.png';
+                            break;
+                        case 'diam':
+                            carImage = 'backend/assets/excavator/excavator-ack.png';
+                            break;
+                        case 'berhenti':
+                            carImage = 'backend/assets/excavator/excavator-engine.png';
+                            break;
+                        default:
+                            carImage = 'backend/assets/excavator/excavator-default.png';
                     }
                 } else {
                     // console.log('gak ada status nih')
