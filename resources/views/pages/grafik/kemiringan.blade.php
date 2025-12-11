@@ -7,7 +7,7 @@
 
         /* FULLSCREEN LOADING OVERLAY */
         #loadingOverlay {
-            display: none;            /* default: hidden */
+            display: none;                 /* awalnya tidak tampil */
             position: fixed;
             top: 0;
             left: 0;
@@ -16,11 +16,14 @@
             background: rgba(255,255,255,0.7);
             z-index: 9999;
             backdrop-filter: blur(2px);
-
-            /* HAPUS !important, biarkan JS yang kontrol */
-            justify-content: center;
-            align-items: center;
         }
+
+        #loadingOverlay.active {
+            display: flex !important;      /* tampil dengan mode flex */
+            justify-content: center;
+            align-items: center;           /* spinner tetap di tengah */
+        }
+
 
         /* SPINNER */
         .spinner {
@@ -228,7 +231,7 @@
                     type: 'GET',
 
                     beforeSend: function() {
-                        $("#loadingOverlay").fadeIn(150);
+                        $("#loadingOverlay").addClass("active");
                     },
 
                     success: function (response) {
@@ -353,7 +356,7 @@
                     }, 
 
                     complete: function () {
-                        $("#loadingOverlay").fadeOut(150);
+                        $("#loadingOverlay").removeClass("active");
                     },
                 });
             });
