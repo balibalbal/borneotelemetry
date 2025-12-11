@@ -7,7 +7,7 @@
 
         /* FULLSCREEN LOADING OVERLAY */
         #loadingOverlay {
-            display: none;                 /* default hidden */
+            display: none;            /* default: hidden */
             position: fixed;
             top: 0;
             left: 0;
@@ -17,11 +17,10 @@
             z-index: 9999;
             backdrop-filter: blur(2px);
 
-            display: flex !important;      /* ★ PENTING: selalu mode FLEX */
+            /* HAPUS !important, biarkan JS yang kontrol */
             justify-content: center;
             align-items: center;
         }
-
 
         /* SPINNER */
         .spinner {
