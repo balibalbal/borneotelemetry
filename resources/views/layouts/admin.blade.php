@@ -86,7 +86,7 @@
               // const roll = data.roll;
               const roll = Math.round(data.roll);
               const no_pol = data.no_pol;
-              const fixTime = data.fixTime;
+              const time = data.time;
               
               // Cek jika pengguna sudah aktifkan suara, baru putar audio
               @if(auth()->user()->settings['suara'] ?? false)
@@ -104,7 +104,7 @@
                     style="position: fixed; bottom: 200px; right: 20px; z-index: 1050; background-color: #FBFFE4; color: grey;">
                   <div class="toast-header d-flex align-items-center justify-content-between w-100" style="background-color: #B22222; color: white;">
                     <div class="d-flex align-items-center">
-                        <i class="mdi mdi-car-traction-control text-white me-2"></i>
+                        <i class="mdi mdi-angle-acute text-white me-2"></i>
                         <strong class="me-3">Kemiringan</strong>
                     </div>
 
@@ -117,7 +117,7 @@
                 </div>
 
                   <div class="toast-body">
-                      Tanggal : ${fixTime}<br>
+                      Tanggal : ${time}<br>
                       Kemiringan : ${roll} derajat
                   </div>
                 </div>
