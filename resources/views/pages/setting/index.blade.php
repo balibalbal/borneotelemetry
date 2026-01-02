@@ -78,7 +78,7 @@
         </div>
         @endif --}}
         
-        <div class="col-sm-6 col-lg-4 mb-4">
+        {{-- <div class="col-sm-6 col-lg-4 mb-4">
             <div class="card card-border-shadow-warning h-100">
                 <div class="card">
                     <div class="card-body">
@@ -106,7 +106,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="col-sm-6 col-lg-4 mb-4">
             <div class="card card-border-shadow-warning h-100">
                 <div class="card">
