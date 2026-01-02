@@ -116,6 +116,17 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <span class="mdi mdi-cog"></span>
+                            Setting
+                        </a>
+                        <ul class="dropdown-menu">
+                          @if (auth()->user()->hasPermissionTo('tambah-user'))
+                            <li><a class="dropdown-item" href="/settings"><span class="mdi mdi-bell-ring"></span> Notification</a></li>
+                          @endif
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                             <span class="mdi mdi-account-group"></span>
                             Role & Akses
                         </a>
