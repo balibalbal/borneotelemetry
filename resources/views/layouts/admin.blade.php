@@ -127,11 +127,10 @@
               document.body.insertAdjacentHTML('beforeend', toastHtml);
 
               // Menampilkan toast menggunakan Bootstrap Toast
-              const toastElements = document.querySelectorAll('.toast');
-              toastElements.forEach(toast => {
-                const toastInstance = new bootstrap.Toast(toast);
-                toastInstance.show();
-              });
+              const toastEl = document.querySelector('.toast-custom:last-child');
+              const toastInstance = new bootstrap.Toast(toastEl, { delay: 5000 });
+              toastInstance.show();
+
             }
           @endif 
       });
