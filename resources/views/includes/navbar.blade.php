@@ -117,11 +117,11 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                             <span class="mdi mdi-cog"></span>
-                            Setting
+                            Pengaturan
                         </a>
                         <ul class="dropdown-menu">
                           @if (auth()->user()->hasPermissionTo('tambah-user'))
-                            <li><a class="dropdown-item" href="/settings"><span class="mdi mdi-bell-ring"></span> Notification</a></li>
+                            <li><a class="dropdown-item" href="/settings"><span class="mdi mdi-bell-ring"></span> Notifikasi</a></li>
                           @endif
                         </ul>
                     </li>
