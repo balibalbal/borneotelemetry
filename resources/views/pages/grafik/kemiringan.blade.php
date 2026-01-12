@@ -154,8 +154,8 @@
                     const { ctx, chartArea, scales } = chart;
                     if (!chartArea) return;
 
-                    const yTop = scales.y.getPixelForValue(3);
-                    const yBottom = scales.y.getPixelForValue(-3);
+                    const yTop = scales.y.getPixelForValue(2.3);
+                    const yBottom = scales.y.getPixelForValue(-2.3);
                     const { left, right, top, bottom } = chartArea;
 
                     ctx.save();
