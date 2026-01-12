@@ -108,7 +108,7 @@
                   <div class="card">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <div class="card-title mb-0">
-                        <h5><i class="mdi mdi-excavator mdi-36px" style="color: red;"></i> Excavator Kemiringan > 3° ({{ $overKemiringanCount }} unit)</h5>
+                        <h5><i class="mdi mdi-excavator mdi-36px" style="color: red;"></i> Excavator Kemiringan > 2.3° ({{ $overKemiringanCount }} unit)</h5>
                       </div>
                       <a href="{{ route('reports.index') }}" class="btn rounded-pill btn-success waves-effect waves-light"><i class="mdi mdi-file-document-outline"></i> Selengkapnya</a>
                     </div>

@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ->where('active', 1)
             ->count();
 
-            $overKemiringanCount = Traccar::where('roll', '>', 3)
+            $overKemiringanCount = Traccar::where('roll', '>', 2.3)
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->where('active', 1)

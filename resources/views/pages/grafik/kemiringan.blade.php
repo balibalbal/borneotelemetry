@@ -62,7 +62,7 @@
                       <div class="col-lg-4">
                         <div class="form-floating form-floating-outline mb-3">
                           <select name="vehicle_id" id="vehicle_id" class="form-select">
-                            <option value="">Select Vehicle</option>
+                            <option value="">Select Asset/Vehicle</option>
                             @foreach($vehicles as $vehicle)
                               <option value="{{ $vehicle->id }}">{{ $vehicle->no_pol }}</option>
                             @endforeach
@@ -296,14 +296,14 @@
                                         annotations: {
                                             batasAtas: {
                                                 type: 'line',
-                                                yMin: 3,
-                                                yMax: 3,
+                                                yMin: 2.3,
+                                                yMax: 2.3,
                                                 borderColor: 'red',
                                                 borderWidth: 1.8,
                                                 borderDash: [6, 6],
                                                 label: {
                                                     display: true,
-                                                    content: ['+3° Batas Aman'],
+                                                    content: ['+2.3° Batas Aman'],
                                                     backgroundColor: 'rgba(255,0,0,0.25)',
                                                     yAdjust: -10,
                                                     padding: 6,
@@ -313,14 +313,14 @@
                                             },
                                             batasBawah: {
                                                 type: 'line',
-                                                yMin: -3,
-                                                yMax: -3,
+                                                yMin: -2.3,
+                                                yMax: -2.3,
                                                 borderColor: 'red',
                                                 borderWidth: 1.8,
                                                 borderDash: [6, 6],
                                                 label: {
                                                     display: true,
-                                                    content: ['-3° Batas Aman'],
+                                                    content: ['-2.3° Batas Aman'],
                                                     backgroundColor: 'rgba(255,0,0,0.25)',
                                                     yAdjust: 10,
                                                     padding: 6,
